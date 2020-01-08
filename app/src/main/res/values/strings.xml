@@ -1,0 +1,46 @@
+<resources>
+    <string name="app_name">Fake or Fact</string>
+    <string name="welcome">Is it fake or fact? You decide!</string>
+    <string name="quiz">Quiz Yourself</string>
+    <string name="start_game">Start Game</string>
+    <string name="join_game">Join Game</string>
+    <string name="settings">Settings</string>
+
+    <!-- Quiz Messages -->
+    <string name="quiz_title">Choose a Category</string>
+    <string name="history">History</string>
+    <string name="science">Science</string>
+    <string name="art">Art</string>
+    <string name="random">Random</string>
+
+    <!-- Quiz Fragment Messages -->
+    <string name="quiz_question">Hello Empty Question!</string>
+    <string name="quiz_fake">Fake</string>
+    <string name="quiz_fact">Fact</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- Start/Join Game Messages -->
+    <string name="enter_code">Please enter the game code</string>
+    <string name="enter_code_title">Enter Game Code Below</string>
+    <string name="wrong_code">Oops! We cannot find that code. Please make sure it is
+            typed correctly or the game still exists</string>
+    <string name="enter_game_name">Please enter your codename</string>
+    <string name="enter_game_name_title">Enter Codename Below</string>
+
+
+    <!-- Preference Titles -->
+    <string name="messages_header">Messages</string>
+    <string name="sync_header">Sync</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+
+</resources>
