@@ -15,28 +15,23 @@ import static android.content.ContentValues.TAG;
 
 public class FirebaseDb {
 
-    private List<String> questions = new ArrayList<>();
-    private List<String> answers = new ArrayList<>();
+    private List<Map<String, String>> questionList;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     // Get questions based on chosen category
     public void getQuestions(String category) {
-        DocumentReference docRef = db.collection("Questions").document("Science");
+        DocumentReference docRef = db.collection("Questions").document("Art");
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                        Map<String, Object> doc = document.getData();
-                        for (Map.Entry<String, Object> docs: doc.entrySet()) {
-                            questions.add(document.getString("q"));
-                            answers.add(document.getString("ans"));
+                        questionList = (List<Map<String, String>>) document.get("test");
 
-                            Log.v("DatabaseGrab1", "Question: " + questions);
-                            Log.v("DatabaseGrab2", "Answer: " + answers);
-                        }
-                        Log.v("DatabaseGrab3", "Question: " + document.getData());
+                        Log.v("DatabaseGrab3", "TEST1: " + questionList);
+                        Log.v("DatabaseGrab3", "TEST2: " + questionList.get(0));
+                        Log.v("DatabaseGrab3", "TEST3: " + questionList.get(1));
                     } else {
                         Log.d(TAG, "No such document");
                     }
@@ -45,5 +40,9 @@ public class FirebaseDb {
                 }
             }
         });
+    }
+
+    public List<Map<String, String>> getQuestionList(){
+        return questionList;
     }
 }

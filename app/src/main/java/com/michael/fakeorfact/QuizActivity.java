@@ -1,10 +1,8 @@
 package com.michael.fakeorfact;
 
+import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,10 +16,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-/** Fragment That Displays Quiz Questions */
-public class QuizFragment extends Fragment implements View.OnClickListener{
+public class QuizActivity extends AppCompatActivity implements View.OnClickListener {
 
-    View view;                                  // Create View
     TextView quizQuestion;                      // Var for Question TextView
     Button wrong;                               // Var for False Button
     Button correct;                             // Var for True Button
@@ -33,33 +29,28 @@ public class QuizFragment extends Fragment implements View.OnClickListener{
     private List<Map<String, String>> qList;    // Store questions
 
 
-    public QuizFragment() {
-        // Required empty public constructor
-    }
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_quiz);
+
         // Set Up View, Buttons, and TextView
-        view = inflater.inflate(R.layout.fragment_quiz, container, false);
-        wrong = view.findViewById(R.id.btn_fake);
-        correct = view.findViewById(R.id.btn_fact);
-        quizQuestion = view.findViewById(R.id.txt_quizQuestion);
+        wrong = findViewById(R.id.btn_fake);
+        correct = findViewById(R.id.btn_fact);
+        quizQuestion = findViewById(R.id.txt_quizQuestion);
         wrong.setOnClickListener(this);
         correct.setOnClickListener(this);
 
         setUpQuestions();
         setUpGame();
-
-        return inflater.inflate(R.layout.fragment_quiz, container, false);
     }
 
     @Override
     // Call Animation on click
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.btn_fact: questionAnimation(); break;
-            case R.id.btn_fake: questionAnimation(); break;
+            case R.id.btn_fact: questionAnimation("Fact"); break;
+            case R.id.btn_fake: questionAnimation("Fake"); break;
         }
     }
 
@@ -83,14 +74,25 @@ public class QuizFragment extends Fragment implements View.OnClickListener{
     }
 
     // Based on Answer, Decide click outcome
-    public void questionAnimation(){
-        if (qAns == "True"){
-            Toast.makeText(getActivity(), "You got it right!", Toast.LENGTH_SHORT).show();
-            // Play Correct Animation
-        }
-        else if (qAns == "False"){
-            Toast.makeText(getActivity(), "Oops! You go it wrong", Toast.LENGTH_SHORT).show();
-            // Play InCorrect Animation
+    public void questionAnimation(String choice){
+        switch (choice){
+            case "Fact":
+                if(qAns == "True"){
+                // Play Correct Animation
+                Toast.makeText(this, "You got it right!", Toast.LENGTH_SHORT).show();}
+                else{
+                    Toast.makeText(this, "Oops! You go it wrong", Toast.LENGTH_SHORT).show();
+                    // Play InCorrect Animation
+                }break;
+            case "Fake":
+                if(qAns == "False"){
+                    // Play Correct Animation
+                    Toast.makeText(this, "You got it right!", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Toast.makeText(this, "Oops! You go it wrong", Toast.LENGTH_SHORT).show();
+                    // Play InCorrect Animation
+                }break;
         }
     }
 }

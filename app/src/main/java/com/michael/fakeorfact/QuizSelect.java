@@ -1,7 +1,11 @@
 package com.michael.fakeorfact;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -62,17 +66,13 @@ public class QuizSelect extends AppCompatActivity implements View.OnClickListene
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_history:
-                SetAnimationFocus(ani_unfocus, ani[0], "History");
-                break;
+                SetAnimationFocus(ani_unfocus, ani[0], "History"); break;
             case R.id.btn_science:
-                SetAnimationFocus(ani_unfocus, ani[1], "Science");
-                break;
+                SetAnimationFocus(ani_unfocus, ani[1], "Science"); break;
             case R.id.btn_art:
-                SetAnimationFocus(ani_unfocus, ani[2], "Art");
-                break;
+                SetAnimationFocus(ani_unfocus, ani[2], "Art"); break;
             case R.id.btn_random:
-                SetAnimationFocus(ani_unfocus, ani[3], "Random");
-                break;
+                SetAnimationFocus(ani_unfocus, ani[3], "Random"); break;
             case R.id.btn_start:
                 // If no button selected, inform user to select category
                 if(!checkAnimations()){
@@ -80,9 +80,10 @@ public class QuizSelect extends AppCompatActivity implements View.OnClickListene
                             "please select a category", Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    //checkAnimations();
                     myDb.getQuestions(chosen);
                     Log.v("Test", "ani_unfocus = " + ani_unfocus);
+                    // Open Quiz Fragment
+                    startActivity(new Intent(QuizSelect.this, QuizActivity.class));
                 }
                 break;
         }
@@ -91,13 +92,9 @@ public class QuizSelect extends AppCompatActivity implements View.OnClickListene
     // Determine if a category has been selected
     public boolean checkAnimations(){
         if(ani[0].getProgress() == 0) {
-            chosen = "History";
             if (ani[1].getProgress() == 0) {
-                chosen = "Science";
                 if (ani[2].getProgress() == 0) {
-                    chosen = "Art";
                     if (ani[3].getProgress() == 0) {
-                        chosen = "Random";
                         return false;
                     }}}}
         return true;}
