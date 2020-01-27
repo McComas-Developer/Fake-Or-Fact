@@ -21,11 +21,11 @@
 
     <!-- Start/Join Game Messages -->
     <string name="enter_code">Please enter the game code</string>
-    <string name="enter_code_title">Enter Game Code Below</string>
+    <string name="enter_code_title">Enter Game Code</string>
     <string name="wrong_code">Oops! We cannot find that code. Please make sure it is
             typed correctly or the game still exists</string>
     <string name="enter_game_name">Please enter your codename</string>
-    <string name="enter_game_name_title">Enter Codename Below</string>
+    <string name="enter_game_name_title">Enter Codename</string>
 
 
     <!-- Preference Titles -->

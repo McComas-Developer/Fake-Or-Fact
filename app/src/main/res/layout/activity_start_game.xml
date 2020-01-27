@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/background"
-    tools:context=".QuizFragment"
+    tools:context=".StartGame"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <TextView
@@ -30,7 +30,7 @@
         android:layout_marginTop="50dp"
         android:textAlignment="viewStart"
         android:drawableStart="@drawable/history"
-        android:background="@drawable/round_button"
+        android:background="@drawable/button_state"
         app:layout_constraintTop_toBottomOf="@+id/txt_startCategory"
         app:layout_constraintLeft_toLeftOf="parent" />
     <Button
@@ -43,7 +43,7 @@
         android:layout_marginTop="50dp"
         android:textAlignment="viewStart"
         android:drawableStart="@drawable/science"
-        android:background="@drawable/round_button"
+        android:background="@drawable/button_state"
         app:layout_constraintTop_toBottomOf="@+id/txt_startCategory"
         app:layout_constraintLeft_toRightOf="@+id/btn_Start_History"
         app:layout_constraintRight_toRightOf="parent"/>
@@ -57,7 +57,7 @@
         android:layout_marginTop="20dp"
         android:textAlignment="viewStart"
         android:drawableStart="@drawable/art"
-        android:background="@drawable/round_button"
+        android:background="@drawable/button_state"
         app:layout_constraintTop_toBottomOf="@+id/btn_Start_History"
         app:layout_constraintLeft_toLeftOf="parent" />
 
@@ -71,7 +71,7 @@
         android:layout_marginTop="20dp"
         android:textAlignment="viewStart"
         android:drawableStart="@drawable/random"
-        android:background="@drawable/round_button"
+        android:background="@drawable/button_state"
         app:layout_constraintTop_toBottomOf="@+id/btn_Start_Science"
         app:layout_constraintLeft_toRightOf="@+id/btn_Start_Art"
         app:layout_constraintRight_toRightOf="parent"/>
