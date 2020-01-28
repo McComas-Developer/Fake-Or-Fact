@@ -3,6 +3,7 @@ package com.michael.fakeorfact;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,10 +23,10 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
     Button wrong;                               // Var for False Button
     Button correct;                             // Var for True Button
 
-    FirebaseDb db;                              // Create object for database to grab info
+    //FirebaseDb db;                              // Create object for database to grab info
     private int qCnt;
     private String qAns;
-    private Map<String, String> qSet;           // Current Question Map
+    //private Map<String, String> qSet;           // Current Question Map
     private List<Map<String, String>> qList;    // Store questions
 
 
@@ -42,7 +43,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         correct.setOnClickListener(this);
 
         setUpQuestions();
-        setUpGame();
+        //setUpGame();
     }
 
     @Override
@@ -56,8 +57,9 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
 
     // Grab DB Questions And Set Up Controls
     public void setUpGame(){
+        Map<String, String> qSet = qList.get(qCnt);
         // Iterate through Map and grab question and answer
-        qSet = qList.get(qCnt);
+        //qSet = qList.get(qCnt);
         for (Map.Entry<String, String> entry : qSet.entrySet()) {
             quizQuestion.setText(entry.getKey());
             qAns = entry.getValue();
@@ -66,7 +68,10 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void setUpQuestions(){
+        FirebaseDb db = new FirebaseDb();
+        db.getQuestions("dummy");
         qList = db.getQuestionList();
+        Log.v("Quiz", "grabbed: " + qList);
         // Shuffle List
         Collections.shuffle(qList);
         // Have counter to keep track of questions
@@ -81,7 +86,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
                 // Play Correct Animation
                 Toast.makeText(this, "You got it right!", Toast.LENGTH_SHORT).show();}
                 else{
-                    Toast.makeText(this, "Oops! You go it wrong", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Oops! You got it wrong", Toast.LENGTH_SHORT).show();
                     // Play InCorrect Animation
                 }break;
             case "Fake":
@@ -90,7 +95,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
                     Toast.makeText(this, "You got it right!", Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    Toast.makeText(this, "Oops! You go it wrong", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Oops! You got it wrong", Toast.LENGTH_SHORT).show();
                     // Play InCorrect Animation
                 }break;
         }

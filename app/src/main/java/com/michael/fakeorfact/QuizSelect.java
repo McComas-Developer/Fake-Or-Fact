@@ -81,7 +81,6 @@ public class QuizSelect extends AppCompatActivity implements View.OnClickListene
                 }
                 else{
                     myDb.getQuestions(chosen);
-                    Log.v("Test", "ani_unfocus = " + ani_unfocus);
                     // Open Quiz Fragment
                     startActivity(new Intent(QuizSelect.this, QuizActivity.class));
                 }
