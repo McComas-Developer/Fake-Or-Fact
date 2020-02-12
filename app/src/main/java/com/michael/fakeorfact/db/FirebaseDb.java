@@ -28,6 +28,7 @@ public class FirebaseDb {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         questionList = (List<Map<String, String>>) document.get("test");
+                        Log.d("Elijah", "Q list == null in getQuestions call  :  " +(questionList == null));
 
                         Log.v("DatabaseGrab3", "TEST1: " + questionList);
                         Log.v("DatabaseGrab3", "TEST2: " + questionList.get(0));
@@ -43,6 +44,7 @@ public class FirebaseDb {
     }
 
     public List<Map<String, String>> getQuestionList(){
+        Log.d("Elijah", "Q list == null in getQuestionsList call  :  " +(questionList == null));
         return questionList;
     }
 }

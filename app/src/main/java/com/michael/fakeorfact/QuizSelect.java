@@ -80,7 +80,7 @@ public class QuizSelect extends AppCompatActivity implements View.OnClickListene
                             "please select a category", Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    myDb.getQuestions(chosen);
+                    //myDb.getQuestions(chosen);
                     // Open Quiz Fragment
                     startActivity(new Intent(QuizSelect.this, QuizActivity.class));
                 }

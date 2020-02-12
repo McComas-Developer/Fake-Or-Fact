@@ -5,6 +5,7 @@
     <string name="start_game">Start Game</string>
     <string name="join_game">Join Game</string>
     <string name="settings">Settings</string>
+    <string name="credit">Dark Mode. *This icon was created by Freepik on flaticon.com*</string>
 
     <!-- Quiz Messages -->
     <string name="quiz_title">Choose a Category</string>
@@ -26,7 +27,18 @@
             typed correctly or the game still exists</string>
     <string name="enter_game_name">Please enter your codename</string>
     <string name="enter_game_name_title">Enter Codename</string>
+    <string name="next_quiz_question">Next Question</string>
 
+
+    <!-- Dialogue Box -->
+    <string name="contact_box_dialog">If you have any questions, concerns, or would like to
+        report an issue with the app, please email us at support.fakeorfact@gmail.com</string>
+    <string name="info_box_dialog">Fake or Fact is a knowledge based trivia game designed by an aspiring
+        android developer; Michael McComas. Test your skill by determining whether or not the
+        statements you are presented with are true or false. Good luck and have fun!</string>
+    <string name="dark_mode_box_title">Enable Dark Mode</string>
+    <string name="contact_title">Contact Us</string>
+    <string name="info_title">About</string>
 
     <!-- Preference Titles -->
     <string name="messages_header">Messages</string>

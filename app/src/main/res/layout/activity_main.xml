@@ -93,25 +93,28 @@
 
     <ImageButton
         android:id="@+id/img_btn_info"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
         android:scaleType="fitCenter"
         android:adjustViewBounds="true"
+        android:contentDescription="@string/info_title"
         android:background="?android:selectableItemBackground"
         app:srcCompat="@mipmap/info"
         android:layout_marginTop="25dp"
+        android:layout_marginStart="60dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/img_btn_question"/>
+        app:layout_constraintRight_toLeftOf="@+id/img_btn_dark"/>
 
     <ImageButton
-        android:id="@+id/img_btn_question"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:id="@+id/img_btn_dark"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
         android:scaleType="fitCenter"
         android:adjustViewBounds="true"
+        android:contentDescription="@string/credit"
         android:background="?android:selectableItemBackground"
-        app:srcCompat="@mipmap/question"
+        app:srcCompat="@mipmap/eclipse"
         android:layout_marginTop="25dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toRightOf="@+id/img_btn_info"
@@ -119,15 +122,17 @@
 
     <ImageButton
         android:id="@+id/img_btn_contact"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
         android:scaleType="fitCenter"
         android:adjustViewBounds="true"
+        android:contentDescription="@string/contact_title"
         android:background="?android:selectableItemBackground"
         app:srcCompat="@mipmap/contact"
         android:layout_marginTop="25dp"
+        android:layout_marginEnd="60dp"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toRightOf="@+id/img_btn_question"
+        app:layout_constraintLeft_toRightOf="@+id/img_btn_dark"
         app:layout_constraintRight_toRightOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
