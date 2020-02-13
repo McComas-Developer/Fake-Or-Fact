@@ -1,8 +1,10 @@
-package com.michael.fakeorfact;
+package com.michael.fakeorfact.splash;
 
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.michael.fakeorfact.MainActivity;
 
 public class SplashActivity extends AppCompatActivity {
 

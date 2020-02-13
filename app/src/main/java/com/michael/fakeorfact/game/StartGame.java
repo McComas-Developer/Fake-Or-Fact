@@ -1,8 +1,10 @@
-package com.michael.fakeorfact;
+package com.michael.fakeorfact.game;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.michael.fakeorfact.R;
 
 public class StartGame extends AppCompatActivity {
 
