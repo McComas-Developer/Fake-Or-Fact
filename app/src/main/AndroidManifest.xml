@@ -9,15 +9,11 @@
         android:roundIcon="@mipmap/fakeorfact_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".QuizActivity" android:screenOrientation="portrait"></activity>
-        <activity android:name=".StartGame" android:screenOrientation="portrait"/>
-        <activity android:name=".JoinGame" android:screenOrientation="portrait"/>
-        <activity
-            android:name=".SettingsActivity"
-            android:label="@string/title_activity_settings"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".QuizSelect" android:screenOrientation="portrait"/>
-        <activity android:name=".SplashActivity" android:theme="@style/SplashTheme" android:screenOrientation="portrait">
+        <activity android:name=".game.QuizActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name=".game.StartGame" android:screenOrientation="portrait"/>
+        <activity android:name=".game.JoinGame" android:screenOrientation="portrait"/>
+        <activity android:name=".game.QuizSelect" android:screenOrientation="portrait"/>
+        <activity android:name=".splash.SplashActivity" android:theme="@style/SplashTheme" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
