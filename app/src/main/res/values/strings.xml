@@ -29,6 +29,9 @@
     <string name="enter_game_name_title">Enter Codename</string>
     <string name="next_quiz_question">Next Question</string>
 
+    <!-- Animation Messages -->
+    <string name="correct_ans">You Got it Right!</string>
+    <string name="wrong_ans">Oops! Wrong Answer</string>
 
     <!-- Dialogue Box -->
     <string name="contact_box_dialog">If you have any questions, concerns, or would like to

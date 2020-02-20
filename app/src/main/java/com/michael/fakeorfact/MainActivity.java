@@ -4,7 +4,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
@@ -13,10 +12,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
-
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.michael.fakeorfact.game.QuizSelect;
-
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -88,8 +84,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         String msg;
         // Set Up Dialog box
-        //AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-        //ViewGroup viewGroup = findViewById(android.R.id.content);
         AlertDialog.Builder build = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
         switch (v.getId()) {
@@ -111,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.img_btn_contact:
                 View dialV = inflater.inflate(R.layout.contact_view,null);
                 build.setView(dialV);
-                Button close = (Button)dialV.findViewById(R.id.btn_contact_ok);
+                Button close = dialV.findViewById(R.id.btn_contact_ok);
 
                 final AlertDialog box = build.create();
                 close.setOnClickListener(new View.OnClickListener() {
@@ -120,17 +114,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         box.dismiss();
                     }
                 });
-                box.show();
-                /*View dialogView = LayoutInflater.from(v.getContext()).inflate
-                        (R.layout.contact_view, viewGroup, false);
-                dialogView.setBackgroundResource(android.R.color.transparent);
-                builder.setView(dialogView);
-                AlertDialog alertDialog = builder.create();
-                alertDialog.show();*/ break;
+                box.show(); break;
             case R.id.img_btn_info:
                 View dialogV = inflater.inflate(R.layout.info_view,null);
                 build.setView(dialogV);
-                Button closeBtn = (Button)dialogV.findViewById(R.id.btn_info_ok);
+                Button closeBtn = dialogV.findViewById(R.id.btn_info_ok);
 
                 final AlertDialog dialog = build.create();
                 closeBtn .setOnClickListener(new View.OnClickListener() {
