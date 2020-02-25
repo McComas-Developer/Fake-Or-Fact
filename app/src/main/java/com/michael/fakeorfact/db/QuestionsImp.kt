@@ -11,7 +11,7 @@ class QuestionsImp(): QuestionRepository {
         var result = MutableLiveData<List<Question>>()
         db.collection(category).get().addOnSuccessListener {
             result.postValue(it.documents.map {doc ->  doc.toObject(Question::class.java)!! })
-            Log.d("Elijah", "repository got: " + result.toString())
+            Log.d("Questions: ", "repository got: " + result.toString())
         }
         return result
     }

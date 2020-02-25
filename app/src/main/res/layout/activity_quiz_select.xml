@@ -115,48 +115,44 @@
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginTop="80dp"
-        android:layout_marginEnd="55dp"
         app:lottie_loop="false"
         app:lottie_autoPlay="false"
         app:lottie_fileName="checkmark.json"
         android:elevation="15dp"
         app:layout_constraintTop_toBottomOf="@+id/txt_quizChoose"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toRightOf="@id/btn_history" />
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/ani_scienceCheck"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginTop="20dp"
-        android:layout_marginEnd="55dp"
         app:lottie_loop="false"
         app:lottie_autoPlay="false"
         app:lottie_fileName="checkmark.json"
         android:elevation="15dp"
         app:layout_constraintTop_toBottomOf="@+id/btn_history"
-        app:layout_constraintRight_toRightOf="parent"/>
+        app:layout_constraintRight_toRightOf="@id/btn_science"/>
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/ani_artCheck"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginTop="20dp"
-        android:layout_marginEnd="55dp"
         app:lottie_loop="false"
         app:lottie_autoPlay="false"
         app:lottie_fileName="checkmark.json"
         android:elevation="15dp"
         app:layout_constraintTop_toBottomOf="@+id/btn_science"
-        app:layout_constraintRight_toRightOf="parent"/>
+        app:layout_constraintRight_toRightOf="@id/btn_art"/>
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/ani_randomCheck"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginTop="20dp"
-        android:layout_marginEnd="55dp"
         app:lottie_loop="false"
         app:lottie_autoPlay="false"
         app:lottie_fileName="checkmark.json"
         android:elevation="15dp"
         app:layout_constraintTop_toBottomOf="@+id/btn_art"
-        app:layout_constraintRight_toRightOf="parent"/>
+        app:layout_constraintRight_toRightOf="@id/btn_random"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
