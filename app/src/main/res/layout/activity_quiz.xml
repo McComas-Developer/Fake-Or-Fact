@@ -40,7 +40,7 @@
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/ani_correct"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="200dp"
         android:gravity="center_horizontal"
         android:layout_marginBottom="300dp"
         app:lottie_loop="false"
@@ -54,7 +54,7 @@
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/ani_wrong"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="150dp"
         android:gravity="center_horizontal"
         android:layout_marginBottom="300dp"
         app:lottie_loop="false"

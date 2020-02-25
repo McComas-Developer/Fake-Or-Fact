@@ -13,6 +13,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 import com.michael.fakeorfact.game.QuizSelect;
+import com.michael.fakeorfact.game.StartGame;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -27,10 +29,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        Button quiz;                // Quiz Button
-        Button start;               // Start Game Button
-        Button join;                // Join Game Button
 
         ani_played = "False";
         setContentView(R.layout.activity_main);
@@ -52,17 +50,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ic_settings.setOnClickListener(this);
 
         // Set Quiz OnClick
-        quiz = findViewById(R.id.btn_quiz);
+        Button quiz = findViewById(R.id.btn_quiz);
         quiz.setOnClickListener(this);
 
         // Set Start OnClick
-        start = findViewById(R.id.btn_startGame);
+        Button start = findViewById(R.id.btn_startGame);
         start.setOnClickListener(this);
 
         // Set Join OnClick
-        join = findViewById(R.id.btn_joinGame);
+        Button join = findViewById(R.id.btn_joinGame);
         join.setOnClickListener(this);
-
 
         Timer timer = new Timer();
         final Animation myAnim = AnimationUtils.loadAnimation(this, R.anim.expand);
@@ -94,8 +91,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 dark.setVisibility(View.GONE);
                 contact.setVisibility(View.GONE); break;
             case R.id.btn_startGame:
-                msg = "Sorry. Game Start isn't available yet :D";
-                Toast.makeText(this, msg, Toast.LENGTH_LONG).show(); break;
+                startActivity(new Intent(MainActivity.this, StartGame.class));
+                //msg = "Sorry. Game Start isn't available yet :D";
+                //Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+                break;
             case R.id.btn_joinGame:
                 msg = "Sorry. Join game isn't available yet :D";
                 Toast.makeText(this, msg, Toast.LENGTH_LONG).show(); break;
