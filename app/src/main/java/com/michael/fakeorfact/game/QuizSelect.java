@@ -1,24 +1,19 @@
-package com.michael.fakeorfact;
+package com.michael.fakeorfact.game;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
-import com.michael.fakeorfact.db.FirebaseDb;
+import com.michael.fakeorfact.R;
 
 public class QuizSelect extends AppCompatActivity implements View.OnClickListener {
 
     private String chosen;
-    FirebaseDb myDb = new FirebaseDb();
 
     // Animation Variables
     private LottieAnimationView[] ani = new LottieAnimationView[4];
@@ -80,10 +75,10 @@ public class QuizSelect extends AppCompatActivity implements View.OnClickListene
                             "please select a category", Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    myDb.getQuestions(chosen);
-                    Log.v("Test", "ani_unfocus = " + ani_unfocus);
-                    // Open Quiz Fragment
-                    startActivity(new Intent(QuizSelect.this, QuizActivity.class));
+                    // Pass category choice to quiz activity and start it
+                    Intent i = new Intent(this, QuizActivity.class);
+                    i.putExtra("choice", chosen);
+                    startActivity(i);
                 }
                 break;
         }
