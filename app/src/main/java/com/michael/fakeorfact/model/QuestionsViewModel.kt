@@ -18,4 +18,16 @@ class QuestionsViewModel: ViewModel() {
         }
         return questions
     }
+    fun createGame(code: String, firstPlayer: String){
+        repository.createGame(code, firstPlayer)
+    }
+    fun deleteGame(code: String){
+        repository.deleteGame(code)
+    }
+    fun addPlayer(code: String, player: String){
+        repository.addPlayer(code, player)
+    }
+    fun removePlayer(code: String, player: String){
+        repository.removePlayer(code, player)
+    }
 }

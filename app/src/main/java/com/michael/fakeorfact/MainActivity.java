@@ -12,6 +12,11 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+import com.michael.fakeorfact.game.JoinGame;
 import com.michael.fakeorfact.game.QuizSelect;
 import com.michael.fakeorfact.game.StartGame;
 
@@ -61,6 +66,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Button join = findViewById(R.id.btn_joinGame);
         join.setOnClickListener(this);
 
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+            }
+        });
+
         Timer timer = new Timer();
         final Animation myAnim = AnimationUtils.loadAnimation(this, R.anim.expand);
         //Set the schedule function
@@ -92,12 +103,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 contact.setVisibility(View.GONE); break;
             case R.id.btn_startGame:
                 startActivity(new Intent(MainActivity.this, StartGame.class));
-                //msg = "Sorry. Game Start isn't available yet :D";
-                //Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
                 break;
             case R.id.btn_joinGame:
-                msg = "Sorry. Join game isn't available yet :D";
-                Toast.makeText(this, msg, Toast.LENGTH_LONG).show(); break;
+                startActivity(new Intent(MainActivity.this, JoinGame.class));
+                break;
             case R.id.img_btn_dark:
                 msg = "Dark Mode Coming Soon";
                 Toast.makeText(this, msg, Toast.LENGTH_LONG).show(); break;

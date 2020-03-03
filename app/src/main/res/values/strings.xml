@@ -18,6 +18,7 @@
     <string name="quiz_question">Hello Empty Question!</string>
     <string name="quiz_fake">Fake</string>
     <string name="quiz_fact">Fact</string>
+    <string name="quiz_timer">0:20</string>
     <string name="title_activity_settings">Settings</string>
 
     <!-- Start/Join Game Messages -->
@@ -28,6 +29,9 @@
     <string name="enter_game_name">Please enter your codename</string>
     <string name="enter_game_name_title">Enter Codename</string>
     <string name="next_quiz_question">Next Question</string>
+    <string name="wait">Waiting for Players…</string>
+    <string name="title_code">Code:</string>
+    <string name="code">Empty Code!</string>
 
     <!-- Animation Messages -->
     <string name="correct_ans">You Got it Right!</string>
