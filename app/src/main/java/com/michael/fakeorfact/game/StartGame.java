@@ -75,13 +75,33 @@ public class StartGame extends AppCompatActivity implements View.OnClickListener
             SetAnimationFocus(ani_unfocus, ani[3], "Random");
         }
         else if(v.getId() == R.id.btn_start_game){
-            progStart.setVisibility(View.VISIBLE);
-            code = UUID.randomUUID().toString().substring(0, 7);
-            questionsViewModel.createGame(code, codeName.getText().toString());
-            Intent i = new Intent(this, WaitScreen.class);
-            i.putExtra("code", code);
-            startActivity(i);
+            if(!checkAnimations()){
+                Toast.makeText(this, "To create a game, " +
+                        "please select a category", Toast.LENGTH_SHORT).show();
+            }
+            else if(codeName.getText().toString().matches("")){
+                Toast.makeText(this, "To create a game, " +
+                        "please enter a codename", Toast.LENGTH_SHORT).show();
+            }
+            else{
+                progStart.setVisibility(View.VISIBLE);
+                code = UUID.randomUUID().toString().substring(0, 7);
+                questionsViewModel.createGame(code, codeName.getText().toString());
+                Intent i = new Intent(this, WaitScreen.class);
+                i.putExtra("code", code);
+                startActivity(i);
+            }
         }
+    }
+    // Determine if a category has been selected
+    public boolean checkAnimations(){
+        if(ani[0].getProgress() == 0) {
+            if (ani[1].getProgress() == 0) {
+                if (ani[2].getProgress() == 0) {
+                    if (ani[3].getProgress() == 0) {
+                        return false;
+                    }}}}
+        return true;
     }
     // Play selected button animation and reset previously chosen one
     private void SetAnimationFocus(LottieAnimationView ani_unfocus, LottieAnimationView ani_focus,

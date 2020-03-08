@@ -19,18 +19,6 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
     <TextView
-        android:id="@+id/txt_title_code"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/title_code"
-        android:textSize="20sp"
-        android:layout_marginTop="20dp"
-        android:layout_marginStart="90dp"
-        android:textColor="@android:color/white"
-        android:textStyle="bold"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_wait"/>
-    <TextView
         android:id="@+id/txt_code"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -40,7 +28,26 @@
         android:layout_marginTop="20dp"
         android:textColor="@android:color/white"
         android:textStyle="bold"
-        app:layout_constraintLeft_toRightOf="@+id/txt_title_code"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txt_wait"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/player_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_code"/>
+    <Button
+        android:id="@+id/btn_begin"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:textAllCaps="false"
+        android:text="@string/start_game"
+        android:background="@drawable/button_state"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/player_view"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -78,7 +78,7 @@
         app:layout_constraintTop_toBottomOf="@+id/txt_EnterGameName"
         android:importantForAutofill="no" />
     <Button
-        android:id="@+id/btn_fake"
+        android:id="@+id/btn_join_game"
         android:text="@string/join_game"
         android:layout_width="300dp"
         android:layout_height="wrap_content"

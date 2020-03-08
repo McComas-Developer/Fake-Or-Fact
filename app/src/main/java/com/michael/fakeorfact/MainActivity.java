@@ -79,12 +79,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
               @Override
               public void run() {
                   // Use bounce interpolator with amplitude 0.2 and frequency 20
-                  MyBounceInterpolator interpolator = new MyBounceInterpolator(0.2, 20);
+                  MyBounceInterpolator interpolator = new MyBounceInterpolator(0.2, 30);
                   myAnim.setInterpolator(interpolator);
 
                   ic_settings.startAnimation(myAnim);
               }
-        },0, 20000);
+        },0, 15000);
     }
 
     // Open Activity based on button clicked
@@ -96,11 +96,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         LayoutInflater inflater = getLayoutInflater();
         switch (v.getId()) {
             case R.id.btn_quiz:
-                ani_played = "False";
                 startActivity(new Intent(MainActivity.this, QuizSelect.class));
-                info.setVisibility(View.GONE);
-                dark.setVisibility(View.GONE);
-                contact.setVisibility(View.GONE); break;
+                break;
             case R.id.btn_startGame:
                 startActivity(new Intent(MainActivity.this, StartGame.class));
                 break;
@@ -150,6 +147,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void onAnimationEnd(Animation arg0) {}
                 }); break;
+        }
+        // Reset setting icon if leaving activity
+        if(v.getId() == R.id.btn_quiz || v.getId() == R.id.btn_startGame || v.getId() == R.id.btn_joinGame){
+            ani_played = "False";
+            info.setVisibility(View.GONE);
+            dark.setVisibility(View.GONE);
+            contact.setVisibility(View.GONE);
         }
     }
     public void anim(){

@@ -127,6 +127,7 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
                 }
             }
             val builder = AlertDialog.Builder(this)
+            builder.setCancelable(false)
             builder.setMessage("Are you sure you want to leave the game?")
                     .setPositiveButton("Yes", dialogClickListener)
                     .setNegativeButton("No", dialogClickListener).show()
