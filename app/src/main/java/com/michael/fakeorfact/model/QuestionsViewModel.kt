@@ -4,8 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.RecyclerView
-import com.michael.fakeorfact.PlayerViewAdapter
-import com.michael.fakeorfact.PlayerViewHolder
+import com.michael.fakeorfact.player.PlayerViewAdapter
 import com.michael.fakeorfact.db.Question
 import com.michael.fakeorfact.db.QuestionRepository
 import com.michael.fakeorfact.db.QuestionsImp
@@ -31,16 +30,16 @@ class QuestionsViewModel: ViewModel() {
     fun setAdapter(mAdapt: PlayerViewAdapter, mView: RecyclerView){
         repository.setAdapter(mAdapt, mView)
     }
-    fun createGame(code: String, firstPlayer: String){
-        repository.createGame(code, firstPlayer)
+    fun createGame(code: String, firstPlayer: String, ID: String){
+        repository.createGame(code, firstPlayer, ID)
     }
     fun deleteGame(code: String){
         repository.deleteGame(code)
     }
-    fun addPlayer(code: String, player: String){
-        repository.addPlayer(code, player)
+    fun addPlayer(code: String, player: String, ID: String){
+        repository.addPlayer(code, player, ID)
     }
-    fun removePlayer(code: String, player: String){
-        repository.removePlayer(code, player)
+    fun removePlayer(code: String, ID: String){
+        repository.removePlayer(code, ID)
     }
 }

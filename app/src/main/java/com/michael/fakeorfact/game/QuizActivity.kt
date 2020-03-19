@@ -1,8 +1,8 @@
 package com.michael.fakeorfact.game
 
-import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
@@ -13,7 +13,6 @@ import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -74,17 +73,13 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
         correct!!.setOnClickListener(this)
         next!!.setOnClickListener(this)
         next!!.visibility = View.GONE
-        aniWrong!!.visibility = View.GONE
-        aniCorrect!!.visibility = View.GONE
         txtWrong!!.visibility = View.GONE
         txtCorrect!!.visibility = View.GONE
-        txtTimer!!.visibility = View.GONE
 
         MobileAds.initialize(this) {}
         mAdView = findViewById(R.id.adView)
         val adRequest = AdRequest.Builder().build()
         mAdView.loadAd(adRequest)
-
 
         // Trying new DB way
         questionsViewModel = ViewModelProviders.of(this).get(QuestionsViewModel::class.java)
@@ -111,26 +106,30 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
     // Controls Back Button Key. If pressed and 'Yes' go to Main Menu
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            Log.d(this.javaClass.name, "back button pressed")
-            val dialogClickListener = DialogInterface.OnClickListener { dialog, which ->
-                when (which) {
-                    DialogInterface.BUTTON_POSITIVE -> {        // Yes button clicked
-                        val intent = Intent(this@QuizActivity,
-                                MainActivity::class.java)
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or
-                                Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                        startActivity(intent)
-                        dialog.dismiss()
-                    }
-                    DialogInterface.BUTTON_NEGATIVE ->          // No button clicked
-                        dialog.dismiss()
-                }
-            }
             val builder = AlertDialog.Builder(this)
-            builder.setCancelable(false)
-            builder.setMessage("Are you sure you want to leave the game?")
-                    .setPositiveButton("Yes", dialogClickListener)
-                    .setNegativeButton("No", dialogClickListener).show()
+            val inflater = layoutInflater
+            // Set view for dialog
+            val dialV = inflater.inflate(R.layout.leave_view, null)
+            builder.setView(dialV)
+            // Find buttons in layout
+            val yes: Button = dialV.findViewById(R.id.btn_yes)
+            val no: Button = dialV.findViewById(R.id.btn_no)
+            // Create dialog box and show
+            val dialog: AlertDialog = builder.create()
+            dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
+            dialog.show()
+            Log.d(this.javaClass.name, "back button pressed")
+            // 'Yes' clicked; exit quiz
+            yes.setOnClickListener {
+                dialog.dismiss()
+                val intent = Intent(this@QuizActivity, MainActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                startActivity(intent)
+            }
+            // 'No' clicked; dismiss
+            no.setOnClickListener {
+                dialog.dismiss()
+            }
         }
         return super.onKeyDown(keyCode, event)
     }
@@ -164,8 +163,8 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
         correct!!.visibility = View.VISIBLE
         quizQuestion!!.visibility = View.VISIBLE
         imgCategory!!.visibility = View.VISIBLE
-        correct!!.isClickable = true
-        wrong!!.isClickable = true
+        correct!!.visibility = View.VISIBLE
+        wrong!!.visibility = View.VISIBLE
         next!!.visibility = View.GONE
 
         // Reset loading animation and hide it
@@ -217,8 +216,7 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
     }
     private fun answerAnimation(answer: String) {
         globTimer!!.cancel()
-        wrong!!.visibility = View.GONE
-        correct!!.visibility = View.GONE
+        setButtons()
         mAdView.visibility = View.GONE
         quizQuestion!!.visibility = View.GONE
         imgCategory!!.visibility = View.GONE
@@ -256,8 +254,6 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
                     }
                     mAdView.visibility = View.VISIBLE
                     txtTimer!!.visibility = View.VISIBLE
-                    wrong!!.visibility = View.VISIBLE
-                    correct!!.visibility = View.VISIBLE
                     quizQuestion!!.visibility = View.VISIBLE
                     imgCategory!!.visibility = View.VISIBLE
                     next!!.visibility = View.VISIBLE
@@ -266,7 +262,7 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
     private fun setButtons() {
-        correct!!.isClickable = false
-        wrong!!.isClickable = false
+        correct!!.visibility = View.GONE
+        wrong!!.visibility = View.GONE
     }
 }

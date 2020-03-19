@@ -1,4 +1,4 @@
-package com.michael.fakeorfact
+package com.michael.fakeorfact.player
 
 import android.util.Log
 import android.view.LayoutInflater

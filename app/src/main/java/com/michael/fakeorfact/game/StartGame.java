@@ -13,20 +13,15 @@ import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.michael.fakeorfact.R;
-import com.michael.fakeorfact.WaitScreen;
 import com.michael.fakeorfact.model.QuestionsViewModel;
 
-import java.util.Random;
 import java.util.UUID;
 
 public class StartGame extends AppCompatActivity implements View.OnClickListener {
-    private Button art;
-    private Button history;
-    private Button science;
-    private Button random;
     private String chosen;
     private Button start;
     private String code;
+    private String playerID;
     private EditText codeName;
     private ProgressBar progStart;
     private QuestionsViewModel questionsViewModel;
@@ -39,6 +34,11 @@ public class StartGame extends AppCompatActivity implements View.OnClickListener
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_game);
+
+        Button art;
+        Button history;
+        Button science;
+        Button random;
 
         questionsViewModel = ViewModelProviders.of(this).get(QuestionsViewModel.class);
 
@@ -86,9 +86,11 @@ public class StartGame extends AppCompatActivity implements View.OnClickListener
             else{
                 progStart.setVisibility(View.VISIBLE);
                 code = UUID.randomUUID().toString().substring(0, 7);
-                questionsViewModel.createGame(code, codeName.getText().toString());
+                playerID = UUID.randomUUID().toString().substring(0, 7);
+                questionsViewModel.createGame(code, codeName.getText().toString(), playerID);
                 Intent i = new Intent(this, WaitScreen.class);
                 i.putExtra("code", code);
+                i.putExtra("ID", playerID);
                 startActivity(i);
             }
         }
