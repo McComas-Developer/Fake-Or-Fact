@@ -5,6 +5,7 @@
 # Quiz Yourself
 * When you select the quiz yourself option, you are taken to a page to select the category for the statments you wish to recieve. *INSERT SCREENSHOT HERE*
 ![Image Quiz Select](https://github.com/McComas-Developer/Fake-Or-Fact/blob/master/images/quizSelect.png = 250x100)
+<img src="https://github.com/McComas-Developer/Fake-Or-Fact/blob/master/images/quizSelect.png" width="48">
 
 # Join a Game
 *Currently in progress*
