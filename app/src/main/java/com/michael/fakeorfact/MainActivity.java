@@ -3,6 +3,8 @@ package com.michael.fakeorfact;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,9 +14,15 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+import com.michael.fakeorfact.game.JoinGame;
 import com.michael.fakeorfact.game.QuizSelect;
 import com.michael.fakeorfact.game.StartGame;
 
+import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -23,7 +31,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private String ani_played;      // Track Settings Icon Use
     ImageView ic_settings;          // Setting Icon
     ImageButton info;               // Info Icon
-    ImageButton dark;           // Question Icon
+    ImageButton dark;               // Question Icon
     ImageButton contact;            // contact Icon
 
     @Override
@@ -61,6 +69,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Button join = findViewById(R.id.btn_joinGame);
         join.setOnClickListener(this);
 
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+            }
+        });
+
         Timer timer = new Timer();
         final Animation myAnim = AnimationUtils.loadAnimation(this, R.anim.expand);
         //Set the schedule function
@@ -68,12 +82,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
               @Override
               public void run() {
                   // Use bounce interpolator with amplitude 0.2 and frequency 20
-                  MyBounceInterpolator interpolator = new MyBounceInterpolator(0.2, 20);
+                  MyBounceInterpolator interpolator = new MyBounceInterpolator(0.2, 30);
                   myAnim.setInterpolator(interpolator);
 
                   ic_settings.startAnimation(myAnim);
               }
-        },0, 20000);
+        },0, 15000);
     }
 
     // Open Activity based on button clicked
@@ -85,19 +99,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         LayoutInflater inflater = getLayoutInflater();
         switch (v.getId()) {
             case R.id.btn_quiz:
-                ani_played = "False";
                 startActivity(new Intent(MainActivity.this, QuizSelect.class));
-                info.setVisibility(View.GONE);
-                dark.setVisibility(View.GONE);
-                contact.setVisibility(View.GONE); break;
+                break;
             case R.id.btn_startGame:
                 startActivity(new Intent(MainActivity.this, StartGame.class));
-                //msg = "Sorry. Game Start isn't available yet :D";
-                //Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
                 break;
             case R.id.btn_joinGame:
-                msg = "Sorry. Join game isn't available yet :D";
-                Toast.makeText(this, msg, Toast.LENGTH_LONG).show(); break;
+                startActivity(new Intent(MainActivity.this, JoinGame.class));
+                break;
             case R.id.img_btn_dark:
                 msg = "Dark Mode Coming Soon";
                 Toast.makeText(this, msg, Toast.LENGTH_LONG).show(); break;
@@ -107,6 +116,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Button close = dialV.findViewById(R.id.btn_contact_ok);
 
                 final AlertDialog box = build.create();
+                Objects.requireNonNull(box.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 close.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -120,7 +130,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Button closeBtn = dialogV.findViewById(R.id.btn_info_ok);
 
                 final AlertDialog dialog = build.create();
-                closeBtn .setOnClickListener(new View.OnClickListener() {
+                Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                closeBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         dialog.dismiss();
@@ -142,9 +153,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     public void onAnimationEnd(Animation arg0) {}
                 }); break;
         }
+        // Reset setting icon if leaving activity
+        if(v.getId() == R.id.btn_quiz || v.getId() == R.id.btn_startGame || v.getId() == R.id.btn_joinGame){
+            ani_played = "False";
+            info.setVisibility(View.GONE);
+            dark.setVisibility(View.GONE);
+            contact.setVisibility(View.GONE);
+        }
     }
     public void anim(){
-        if(ani_played == "False") {
+        if(ani_played.equals("False")) {
             ani_played = "True";
             Animation aniFade = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fade_in);
 

@@ -1,8 +1,10 @@
 package com.michael.fakeorfact.game
 
-import android.content.DialogInterface
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.util.Log
 import android.view.KeyEvent
 import android.view.View
@@ -11,13 +13,15 @@ import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.airbnb.lottie.LottieAnimationView
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.MobileAds
 import com.michael.fakeorfact.MainActivity
 import com.michael.fakeorfact.R
 import com.michael.fakeorfact.db.Question
@@ -30,10 +34,12 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
     private var loading: LottieAnimationView? = null
     private var aniWrong: LottieAnimationView? = null
     private var aniCorrect: LottieAnimationView? = null
+    private var globTimer: CountDownTimer? = null
     private var quizQuestion: TextView? = null
     private var imgCategory: ImageView? = null
     private var txtWrong: TextView? = null
     private var txtCorrect: TextView? = null
+    private var txtTimer: TextView? = null
     private var wrong: Button? = null
     private var correct: Button? = null
     private var next: Button? = null
@@ -43,6 +49,8 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var questionsViewModel: QuestionsViewModel
 
     private var qAns: Boolean? = null
+
+    lateinit var mAdView : AdView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,6 +65,7 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
         aniWrong = findViewById(R.id.ani_wrong)
         aniCorrect = findViewById(R.id.ani_correct)
         txtWrong = findViewById(R.id.txt_wrong)
+        txtTimer = findViewById(R.id.txt_timer)
         txtCorrect = findViewById(R.id.txt_correct)
         imgCategory = findViewById(R.id.img_category)
 
@@ -64,10 +73,13 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
         correct!!.setOnClickListener(this)
         next!!.setOnClickListener(this)
         next!!.visibility = View.GONE
-        aniWrong!!.visibility = View.GONE
-        aniCorrect!!.visibility = View.GONE
         txtWrong!!.visibility = View.GONE
         txtCorrect!!.visibility = View.GONE
+
+        MobileAds.initialize(this) {}
+        mAdView = findViewById(R.id.adView)
+        val adRequest = AdRequest.Builder().build()
+        mAdView.loadAd(adRequest)
 
         // Trying new DB way
         questionsViewModel = ViewModelProviders.of(this).get(QuestionsViewModel::class.java)
@@ -94,25 +106,30 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
     // Controls Back Button Key. If pressed and 'Yes' go to Main Menu
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            Log.d(this.javaClass.name, "back button pressed")
-            val dialogClickListener = DialogInterface.OnClickListener { dialog, which ->
-                when (which) {
-                    DialogInterface.BUTTON_POSITIVE -> {        // Yes button clicked
-                        val intent = Intent(this@QuizActivity,
-                                MainActivity::class.java)
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or
-                                Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                        startActivity(intent)
-                        dialog.dismiss()
-                    }
-                    DialogInterface.BUTTON_NEGATIVE ->          // No button clicked
-                        dialog.dismiss()
-                }
-            }
             val builder = AlertDialog.Builder(this)
-            builder.setMessage("Are you sure you want to leave the game?")
-                    .setPositiveButton("Yes", dialogClickListener)
-                    .setNegativeButton("No", dialogClickListener).show()
+            val inflater = layoutInflater
+            // Set view for dialog
+            val dialV = inflater.inflate(R.layout.leave_view, null)
+            builder.setView(dialV)
+            // Find buttons in layout
+            val yes: Button = dialV.findViewById(R.id.btn_yes)
+            val no: Button = dialV.findViewById(R.id.btn_no)
+            // Create dialog box and show
+            val dialog: AlertDialog = builder.create()
+            dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
+            dialog.show()
+            Log.d(this.javaClass.name, "back button pressed")
+            // 'Yes' clicked; exit quiz
+            yes.setOnClickListener {
+                dialog.dismiss()
+                val intent = Intent(this@QuizActivity, MainActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                startActivity(intent)
+            }
+            // 'No' clicked; dismiss
+            no.setOnClickListener {
+                dialog.dismiss()
+            }
         }
         return super.onKeyDown(keyCode, event)
     }
@@ -146,14 +163,35 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
         correct!!.visibility = View.VISIBLE
         quizQuestion!!.visibility = View.VISIBLE
         imgCategory!!.visibility = View.VISIBLE
-        correct!!.isClickable = true
-        wrong!!.isClickable = true
+        correct!!.visibility = View.VISIBLE
+        wrong!!.visibility = View.VISIBLE
         next!!.visibility = View.GONE
 
         // Reset loading animation and hide it
         loading!!.progress = 0f
         loading!!.pauseAnimation()
         loading!!.visibility = View.GONE
+
+        // Set up Game Timer
+        txtTimer!!.visibility = View.VISIBLE
+        txtTimer!!.setTextColor(Color.parseColor("#FFFFFF"))
+        val timer = object: CountDownTimer(20000, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                if((millisUntilFinished / 1000) >= 10)
+                    txtTimer!!.text = ("0:" + (millisUntilFinished / 1000).toString())
+                else if((millisUntilFinished / 1000) < 10) {
+                    txtTimer!!.text = ("0:0" + (millisUntilFinished / 1000).toString())
+                    if ((millisUntilFinished / 1000) <= 5)
+                        txtTimer!!.setTextColor(Color.parseColor("#FF0000"))
+                }
+            }
+            override fun onFinish() {
+                setButtons()
+                next!!.visibility = View.VISIBLE
+            }
+        }
+        timer.start()
+        globTimer = timer
     }
     private fun hideViews(){
         // Play loading animation and Commence set-up
@@ -162,6 +200,7 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
 
         wrong!!.visibility = View.GONE
         correct!!.visibility = View.GONE
+        txtTimer!!.visibility = View.GONE
         quizQuestion!!.visibility = View.GONE
         imgCategory!!.visibility = View.GONE
     }
@@ -176,10 +215,12 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
         setButtons()
     }
     private fun answerAnimation(answer: String) {
-        wrong!!.visibility = View.GONE
-        correct!!.visibility = View.GONE
+        globTimer!!.cancel()
+        setButtons()
+        mAdView.visibility = View.GONE
         quizQuestion!!.visibility = View.GONE
         imgCategory!!.visibility = View.GONE
+        txtTimer!!.visibility = View.GONE
         if(answer == "Correct") {
             txtCorrect!!.visibility = View.VISIBLE
             aniCorrect!!.visibility = View.VISIBLE
@@ -211,8 +252,8 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
                         txtWrong!!.visibility = View.GONE
                         aniWrong!!.visibility = View.GONE
                     }
-                    wrong!!.visibility = View.VISIBLE
-                    correct!!.visibility = View.VISIBLE
+                    mAdView.visibility = View.VISIBLE
+                    txtTimer!!.visibility = View.VISIBLE
                     quizQuestion!!.visibility = View.VISIBLE
                     imgCategory!!.visibility = View.VISIBLE
                     next!!.visibility = View.VISIBLE
@@ -221,7 +262,7 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
     private fun setButtons() {
-        correct!!.isClickable = false
-        wrong!!.isClickable = false
+        correct!!.visibility = View.GONE
+        wrong!!.visibility = View.GONE
     }
 }
