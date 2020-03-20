@@ -39,6 +39,7 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
     private var imgCategory: ImageView? = null
     private var txtWrong: TextView? = null
     private var txtCorrect: TextView? = null
+    private var txtQuestion: TextView? = null
     private var txtTimer: TextView? = null
     private var wrong: Button? = null
     private var correct: Button? = null
@@ -68,13 +69,15 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
         txtTimer = findViewById(R.id.txt_timer)
         txtCorrect = findViewById(R.id.txt_correct)
         imgCategory = findViewById(R.id.img_category)
+        txtQuestion = findViewById(R.id.txt_question_count)
 
         wrong!!.setOnClickListener(this)
         correct!!.setOnClickListener(this)
         next!!.setOnClickListener(this)
-        next!!.visibility = View.GONE
+        //next!!.visibility = View.GONE
         txtWrong!!.visibility = View.GONE
         txtCorrect!!.visibility = View.GONE
+        txtQuestion!!.visibility = View.GONE
 
         MobileAds.initialize(this) {}
         mAdView = findViewById(R.id.adView)
@@ -136,7 +139,7 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
 
     // Observes the questions and adapts
     private fun viewQuestions(category: String) {
-        if(questionList.isNullOrEmpty()){ hideViews() }
+        if(questionList.isNullOrEmpty()){ hideViews("Start") }
         questionsViewModel.getQuestions(category).observe(this, Observer {
             questionList = it
             nextQuestion()
@@ -155,7 +158,13 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
     private fun setUpGame() {
         txt_quizQuestion.text = currentQuestion.Question
         qAns = currentQuestion.Answer
-        showViews()
+        hideViews("Next")
+        thread {
+            Thread.sleep(2000)
+            runOnUiThread {
+                showViews()
+            }
+        }
     }
     private fun showViews(){
         // Bring buttons and text back
@@ -163,9 +172,9 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
         correct!!.visibility = View.VISIBLE
         quizQuestion!!.visibility = View.VISIBLE
         imgCategory!!.visibility = View.VISIBLE
+        txtQuestion!!.visibility = View.GONE
         correct!!.visibility = View.VISIBLE
         wrong!!.visibility = View.VISIBLE
-        next!!.visibility = View.GONE
 
         // Reset loading animation and hide it
         loading!!.progress = 0f
@@ -193,11 +202,27 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
         timer.start()
         globTimer = timer
     }
-    private fun hideViews(){
+    private fun hideViews(option: String){
         // Play loading animation and Commence set-up
-        loading!!.visibility = View.VISIBLE
-        loading!!.playAnimation()
+        if(option == "Start") {
+            loading!!.visibility = View.VISIBLE
+            loading!!.playAnimation()
+        }
+        else if(option == "Next"){
+            loading!!.visibility = View.GONE
+            txtQuestion!!.text = ("Question " + questionsViewModel.currentQuestionIndex)
+            if(questionsViewModel.currentQuestionIndex == 20)
+                txtQuestion!!.text = ("Last Question!")
+            txtQuestion!!.visibility = View.VISIBLE
 
+            val myAnim = AnimationUtils.loadAnimation(this, R.anim.expand)
+            val interpolator = Bounce(0.2, 30.0)
+            myAnim.interpolator = interpolator
+
+            txtQuestion!!.startAnimation(myAnim)
+        }
+
+        next!!.visibility = View.GONE
         wrong!!.visibility = View.GONE
         correct!!.visibility = View.GONE
         txtTimer!!.visibility = View.GONE

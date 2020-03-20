@@ -1,4 +1,4 @@
-package com.michael.fakeorfact.game
+package com.michael.fakeorfact.game.multi
 
 import android.content.Intent
 import android.graphics.Color

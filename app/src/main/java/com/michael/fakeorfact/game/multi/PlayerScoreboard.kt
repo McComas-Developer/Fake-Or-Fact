@@ -1,4 +1,4 @@
-package com.michael.fakeorfact.game
+package com.michael.fakeorfact.game.multi
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
