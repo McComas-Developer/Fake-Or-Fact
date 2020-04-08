@@ -109,7 +109,21 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
             R.id.btn_fake -> questionAnimation("Fake")
             R.id.btn_next -> nextQuestion()
             R.id.btn_explain -> {
-                Toast.makeText(this, qExplain, Toast.LENGTH_SHORT).show()
+                //Toast.makeText(this, qExplain, Toast.LENGTH_SHORT).show()
+                // Set Up Dialog box
+                val build = AlertDialog.Builder(this)
+                val inflater = layoutInflater
+                val dialV: View = inflater.inflate(R.layout.explain_view, null)
+                build.setView(dialV)
+                val close = dialV.findViewById<Button>(R.id.btn_explain_ok)
+                val title = dialV.findViewById<TextView>(R.id.txt_dialog_title)
+                val msg = dialV.findViewById<TextView>(R.id.txt_dialog)
+                title.text = "Explanation"
+                msg.text = qExplain
+                val box: AlertDialog = build.create()
+                box.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                close.setOnClickListener { box.dismiss() }
+                box.show()
             }
         }
     }
@@ -182,8 +196,6 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
         quizQuestion!!.visibility = View.VISIBLE
         imgCategory!!.visibility = View.VISIBLE
         txtQuestion!!.visibility = View.GONE
-        correct!!.visibility = View.VISIBLE
-        wrong!!.visibility = View.VISIBLE
 
         // Reset loading animation and hide it
         loading!!.progress = 0f
