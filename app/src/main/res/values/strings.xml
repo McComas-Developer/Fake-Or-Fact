@@ -17,6 +17,7 @@
     <!-- Quiz Activity Messages -->
     <string name="quiz_question">Hello Empty Question!</string>
     <string name="quiz_fake">Fake</string>
+    <string name="quiz_explain">Explain</string>
     <string name="quiz_fact">Fact</string>
     <string name="quiz_timer">0:20</string>
     <string name="quiz_count">Question 1</string>

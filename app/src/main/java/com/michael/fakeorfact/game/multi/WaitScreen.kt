@@ -95,9 +95,9 @@ class WaitScreen : AppCompatActivity() {
         return super.onKeyDown(keyCode, event)
     }
 
-    override fun onDestroy() {
+    /*override fun onDestroy() {
         // Remove player when app is closed
         questionsViewModel!!.removePlayer(code!!, playerID!!)
         super.onDestroy()
-    }
+    }*/
 }
