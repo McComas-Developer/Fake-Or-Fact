@@ -81,8 +81,8 @@ class QuestionsImp(): QuestionRepository {
     }
     // Add Player to an Existing Game
     override fun addPlayer(code: String, player: String, ID: String) {
-        // TODO: Need to determine if game exists, if so increase com.michael.fakeorfact.player count and use count for
-        //  com.michael.fakeorfact.player DB name
+        // TODO: Need to determine if game exists, if so increase player count and use count for
+        //  player DB name
         mID = ID
         Log.d("AddPlayer", "Got ID2 = $mID")
         Log.d("AddPlayer", "Got code = $code")

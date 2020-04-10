@@ -17,8 +17,10 @@
     <!-- Quiz Activity Messages -->
     <string name="quiz_question">Hello Empty Question!</string>
     <string name="quiz_fake">Fake</string>
+    <string name="quiz_explain">Explain</string>
     <string name="quiz_fact">Fact</string>
     <string name="quiz_timer">0:20</string>
+    <string name="quiz_count">Question 1</string>
     <string name="title_activity_settings">Settings</string>
 
     <!-- Quiz Fragment Messages -->
@@ -56,6 +58,7 @@
         players!</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="okay">Okay</string>
     <string name="game_code_title">Game Code</string>
     <string name="game_name_title">Game CodeName</string>
     <string name="dark_mode_box_title">Enable Dark Mode</string>

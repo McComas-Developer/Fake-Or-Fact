@@ -1,4 +1,4 @@
-package com.michael.fakeorfact.game
+package com.michael.fakeorfact.game.multi
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

@@ -1,4 +1,4 @@
-package com.michael.fakeorfact.game
+package com.michael.fakeorfact.game.multi
 
 import android.content.Intent
 import android.graphics.Color
@@ -95,9 +95,9 @@ class WaitScreen : AppCompatActivity() {
         return super.onKeyDown(keyCode, event)
     }
 
-    override fun onDestroy() {
+    /*override fun onDestroy() {
         // Remove player when app is closed
         questionsViewModel!!.removePlayer(code!!, playerID!!)
         super.onDestroy()
-    }
+    }*/
 }

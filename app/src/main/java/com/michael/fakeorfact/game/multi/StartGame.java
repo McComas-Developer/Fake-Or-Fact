@@ -1,4 +1,4 @@
-package com.michael.fakeorfact.game;
+package com.michael.fakeorfact.game.multi;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
@@ -13,15 +13,13 @@ import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.michael.fakeorfact.R;
+import com.michael.fakeorfact.game.multi.WaitScreen;
 import com.michael.fakeorfact.model.QuestionsViewModel;
 
 import java.util.UUID;
 
 public class StartGame extends AppCompatActivity implements View.OnClickListener {
     private String chosen;
-    private Button start;
-    private String code;
-    private String playerID;
     private EditText codeName;
     private ProgressBar progStart;
     private QuestionsViewModel questionsViewModel;
@@ -46,7 +44,7 @@ public class StartGame extends AppCompatActivity implements View.OnClickListener
         history = findViewById(R.id.btn_Start_History);
         science = findViewById(R.id.btn_Start_Science);
         random = findViewById(R.id.btn_Start_Random);
-        start = findViewById(R.id.btn_start_game);
+        Button start = findViewById(R.id.btn_start_game);
         progStart = findViewById(R.id.start_progBar);
         codeName = findViewById(R.id.editTxt_start_codeName);
 
@@ -85,8 +83,8 @@ public class StartGame extends AppCompatActivity implements View.OnClickListener
             }
             else{
                 progStart.setVisibility(View.VISIBLE);
-                code = UUID.randomUUID().toString().substring(0, 7);
-                playerID = UUID.randomUUID().toString().substring(0, 7);
+                String code = UUID.randomUUID().toString().substring(0, 7);
+                String playerID = UUID.randomUUID().toString().substring(0, 7);
                 questionsViewModel.createGame(code, codeName.getText().toString(), playerID);
                 Intent i = new Intent(this, WaitScreen.class);
                 i.putExtra("code", code);

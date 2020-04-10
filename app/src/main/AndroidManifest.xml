@@ -9,18 +9,18 @@
         android:roundIcon="@mipmap/fakeorfact_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".game.MultiPlayer"></activity>
+        <activity android:name=".game.multi.MultiPlayer"></activity>
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-9060745523188945~8738030290" />
 
-        <activity android:name=".game.WaitScreen" />
+        <activity android:name=".game.multi.WaitScreen" />
         <activity
             android:name=".game.QuizActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".game.StartGame"
+            android:name=".game.multi.StartGame"
             android:screenOrientation="portrait" />
         <activity
             android:name=".game.QuizSelect"

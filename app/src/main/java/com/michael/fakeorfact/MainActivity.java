@@ -20,7 +20,7 @@ import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.michael.fakeorfact.game.JoinGame;
 import com.michael.fakeorfact.game.QuizSelect;
-import com.michael.fakeorfact.game.StartGame;
+import com.michael.fakeorfact.game.multi.StartGame;
 
 import java.util.Objects;
 import java.util.Timer;
