@@ -237,7 +237,7 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
         else if(option == "Next"){
             loading!!.visibility = View.GONE
             txtQuestion!!.text = ("Question " + questionsViewModel.currentQuestionIndex)
-            if(questionsViewModel.currentQuestionIndex == 3) {
+            if(questionsViewModel.currentQuestionIndex == 20) {
                 txtQuestion!!.text = ("Last Question!")
                 loop = 1;
             }
