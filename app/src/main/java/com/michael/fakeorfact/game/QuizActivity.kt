@@ -54,6 +54,8 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
     private var qAns: Boolean? = null
     private var qExplain: String? = null
     lateinit var mAdView : AdView
+    private var loop: Int = 0
+    private var temp: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -182,10 +184,16 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
         txt_quizQuestion.text = currentQuestion.Question
         qAns = currentQuestion.Answer
         qExplain = currentQuestion.Explain
-        hideViews("Next")
-        thread {
-            Thread.sleep(2000)
-            runOnUiThread { showViews() }
+        temp = hideViews("Next")
+        if(temp == 1){
+            showGameEnd()
+            return
+        }
+        else{
+            thread {
+                Thread.sleep(2000)
+                runOnUiThread { showViews() }
+            }
         }
     }
     private fun showViews(){
@@ -220,7 +228,7 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
         timer.start()
         globTimer = timer
     }
-    private fun hideViews(option: String){
+    private fun hideViews(option: String): Int {
         // Play loading animation and Commence set-up
         if(option == "Start") {
             loading!!.visibility = View.VISIBLE
@@ -229,8 +237,14 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
         else if(option == "Next"){
             loading!!.visibility = View.GONE
             txtQuestion!!.text = ("Question " + questionsViewModel.currentQuestionIndex)
-            if(questionsViewModel.currentQuestionIndex == 20)
+            if(questionsViewModel.currentQuestionIndex == 3) {
                 txtQuestion!!.text = ("Last Question!")
+                loop = 1;
+            }
+            else if(loop == 1) {
+                txtQuestion!!.text = ("Game Over")
+                loop = 2
+            }
             txtQuestion!!.visibility = View.VISIBLE
 
             val myAnim = AnimationUtils.loadAnimation(this, R.anim.expand)
@@ -246,6 +260,9 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
         txtTimer!!.visibility = View.GONE
         quizQuestion!!.visibility = View.GONE
         imgCategory!!.visibility = View.GONE
+        if(loop == 2)
+            return 1
+        return 0
     }
     //Based on Answer, Decide click outcome
     private fun questionAnimation(choice: String?) {
@@ -309,5 +326,20 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
         txtTimer!!.visibility = View.VISIBLE
         quizQuestion!!.visibility = View.VISIBLE
         imgCategory!!.visibility = View.VISIBLE
+    }
+    private fun showGameEnd(){
+        setButtons()
+        imgCategory!!.visibility = View.GONE
+        txtTimer!!.visibility = View.GONE
+        next!!.visibility = View.VISIBLE
+        next!!.text = "Go to Main Menu"
+        explain!!.visibility = View.GONE
+        quizQuestion!!.visibility = View.VISIBLE
+        quizQuestion!!.text = "You have completed all questions for this category, but more are coming soon!"
+        next!!.setOnClickListener {
+            val intent = Intent(this@QuizActivity, MainActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            startActivity(intent)
+        }
     }
 }

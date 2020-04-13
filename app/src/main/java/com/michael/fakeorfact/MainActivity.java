@@ -96,11 +96,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.btn_startGame:
                 afterClick();
-                startActivity(new Intent(MainActivity.this, StartGame.class));
+                Toast.makeText(this, "Multi-player Coming Soon :D", Toast.LENGTH_SHORT).show();
+                //startActivity(new Intent(MainActivity.this, StartGame.class));
                 break;
             case R.id.btn_joinGame:
                 afterClick();
-                startActivity(new Intent(MainActivity.this, JoinGame.class));
+                Toast.makeText(this, "Multi-player Coming Soon :D", Toast.LENGTH_SHORT).show();
+                //startActivity(new Intent(MainActivity.this, JoinGame.class));
                 break;
             case R.id.img_btn_dark:
                 msg = "Dark Mode Coming Soon";
