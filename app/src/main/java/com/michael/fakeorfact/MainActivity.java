@@ -95,12 +95,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(new Intent(MainActivity.this, QuizSelect.class));
                 break;
             case R.id.btn_startGame:
-                afterClick();
+                //afterClick();
                 Toast.makeText(this, "Multi-player Coming Soon :D", Toast.LENGTH_SHORT).show();
                 //startActivity(new Intent(MainActivity.this, StartGame.class));
                 break;
             case R.id.btn_joinGame:
-                afterClick();
+                //afterClick();
                 Toast.makeText(this, "Multi-player Coming Soon :D", Toast.LENGTH_SHORT).show();
                 //startActivity(new Intent(MainActivity.this, JoinGame.class));
                 break;
