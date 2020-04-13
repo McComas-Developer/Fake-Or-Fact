@@ -13,7 +13,6 @@ import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -28,6 +27,7 @@ import com.michael.fakeorfact.R
 import com.michael.fakeorfact.db.Question
 import com.michael.fakeorfact.model.QuestionsViewModel
 import kotlinx.android.synthetic.main.activity_quiz.*
+import java.util.*
 import kotlin.concurrent.thread
 
 
@@ -47,7 +47,7 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
     private var correct: Button? = null
     private var next: Button? = null
 
-    var questionList: List<Question>? = null
+    var questionList: MutableList<Question>? = null
     private lateinit var currentQuestion: Question
     private lateinit var questionsViewModel: QuestionsViewModel
 
@@ -109,16 +109,15 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
             R.id.btn_fake -> questionAnimation("Fake")
             R.id.btn_next -> nextQuestion()
             R.id.btn_explain -> {
-                //Toast.makeText(this, qExplain, Toast.LENGTH_SHORT).show()
                 // Set Up Dialog box
                 val build = AlertDialog.Builder(this)
                 val inflater = layoutInflater
-                val dialV: View = inflater.inflate(R.layout.explain_view, null)
+                val dialV: View = inflater.inflate(R.layout.dialog_view, null)
                 build.setView(dialV)
-                val close = dialV.findViewById<Button>(R.id.btn_explain_ok)
+                val close = dialV.findViewById<Button>(R.id.btn_ok)
                 val title = dialV.findViewById<TextView>(R.id.txt_dialog_title)
                 val msg = dialV.findViewById<TextView>(R.id.txt_dialog)
-                title.text = "Explanation"
+                title.text = resources.getString(R.string.explain)
                 msg.text = qExplain
                 val box: AlertDialog = build.create()
                 box.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -162,7 +161,9 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
     private fun viewQuestions(category: String) {
         if(questionList.isNullOrEmpty()){ hideViews("Start") }
         questionsViewModel.getQuestions(category).observe(this, Observer {
-            questionList = it
+            questionList = it as MutableList<Question>?
+            // Shuffle Question List
+            questionList!!.shuffle()
             Log.d("Questions: ", "repository got: $questionList")
             nextQuestion()
         })
@@ -184,17 +185,14 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
         hideViews("Next")
         thread {
             Thread.sleep(2000)
-            runOnUiThread {
-                showViews()
-            }
+            runOnUiThread { showViews() }
         }
     }
     private fun showViews(){
         // Bring buttons and text back
+        showNormal()
         wrong!!.visibility = View.VISIBLE
         correct!!.visibility = View.VISIBLE
-        quizQuestion!!.visibility = View.VISIBLE
-        imgCategory!!.visibility = View.VISIBLE
         txtQuestion!!.visibility = View.GONE
 
         // Reset loading animation and hide it
@@ -203,7 +201,6 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
         loading!!.visibility = View.GONE
 
         // Set up Game Timer
-        txtTimer!!.visibility = View.VISIBLE
         txtTimer!!.setTextColor(Color.parseColor("#FFFFFF"))
         val timer = object: CountDownTimer(20000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
@@ -255,9 +252,7 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
         if(choice == "Fact" && qAns == true || choice == "Fake" && qAns == false){
             answerAnimation("Correct")      // Play Correct Animation
         }
-        else{
-            answerAnimation("Wrong")// Play wrong animation
-        }
+        else{ answerAnimation("Wrong") }    // Play wrong animation
         setButtons()
     }
     private fun answerAnimation(answer: String) {
@@ -298,10 +293,7 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
                         txtWrong!!.visibility = View.GONE
                         aniWrong!!.visibility = View.GONE
                     }
-                    mAdView.visibility = View.VISIBLE
-                    txtTimer!!.visibility = View.VISIBLE
-                    quizQuestion!!.visibility = View.VISIBLE
-                    imgCategory!!.visibility = View.VISIBLE
+                    showNormal()
                     next!!.visibility = View.VISIBLE
                     explain!!.visibility = View.VISIBLE
                     layout.setBackgroundResource(R.drawable.background)
@@ -311,5 +303,11 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
     private fun setButtons() {
         correct!!.visibility = View.GONE
         wrong!!.visibility = View.GONE
+    }
+    private fun showNormal(){
+        mAdView.visibility = View.VISIBLE
+        txtTimer!!.visibility = View.VISIBLE
+        quizQuestion!!.visibility = View.VISIBLE
+        imgCategory!!.visibility = View.VISIBLE
     }
 }

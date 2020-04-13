@@ -59,6 +59,7 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="okay">Okay</string>
+    <string name="explain">Explanation</string>
     <string name="game_code_title">Game Code</string>
     <string name="game_name_title">Game CodeName</string>
     <string name="dark_mode_box_title">Enable Dark Mode</string>

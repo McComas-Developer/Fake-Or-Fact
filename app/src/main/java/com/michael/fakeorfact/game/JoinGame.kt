@@ -52,31 +52,29 @@ class JoinGame : AppCompatActivity() {
             }
         }
         codeInfo.setOnClickListener {
-            // Set Up Dialog box
-            val build = AlertDialog.Builder(this)
-            val inflater = layoutInflater
-            val dialV: View = inflater.inflate(R.layout.code_view, null)
-            build.setView(dialV)
-            val close = dialV.findViewById<Button>(R.id.btn_code_ok)
-
-            val box: AlertDialog = build.create()
-            box.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            close.setOnClickListener { box.dismiss() }
-            box.show()
+            showDialogBox(resources.getString(R.string.game_code_title),
+                    resources.getString(R.string.game_code))
         }
         nameInfo.setOnClickListener {
-            // Set Up Dialog box
-            val build = AlertDialog.Builder(this)
-            val inflater = layoutInflater
-            val dialV: View = inflater.inflate(R.layout.name_view, null)
-            build.setView(dialV)
-            val close = dialV.findViewById<Button>(R.id.btn_name_ok)
-
-            val box: AlertDialog = build.create()
-            box.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            close.setOnClickListener { box.dismiss() }
-            box.show()
+            showDialogBox(resources.getString(R.string.game_name_title),
+                    resources.getString(R.string.game_name))
         }
+    }
+    private fun showDialogBox(mTitle: String, mMsg: String){
+        // Set Up Dialog box
+        val build = AlertDialog.Builder(this)
+        val inflater = layoutInflater
+        val dialV: View = inflater.inflate(R.layout.dialog_view, null)
+        build.setView(dialV)
+        val close = dialV.findViewById<Button>(R.id.btn_ok)
+        val title = dialV.findViewById<TextView>(R.id.txt_dialog_title)
+        val msg = dialV.findViewById<TextView>(R.id.txt_dialog)
+        title.text = mTitle
+        msg.text = mMsg
+        val box: AlertDialog = build.create()
+        box.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        close.setOnClickListener { box.dismiss() }
+        box.show()
     }
     private fun verifyGame(){
         val db = FirebaseFirestore.getInstance()
