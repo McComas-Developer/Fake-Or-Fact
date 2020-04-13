@@ -8,15 +8,14 @@ import android.os.CountDownTimer
 import android.util.Log
 import android.view.KeyEvent
 import android.view.View
-import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.airbnb.lottie.LottieAnimationView
 import com.google.android.gms.ads.AdRequest
@@ -27,19 +26,13 @@ import com.michael.fakeorfact.R
 import com.michael.fakeorfact.db.Question
 import com.michael.fakeorfact.model.QuestionsViewModel
 import kotlinx.android.synthetic.main.activity_quiz.*
-import java.util.*
 import kotlin.concurrent.thread
-
 
 class QuizActivity : AppCompatActivity(), View.OnClickListener {
     private var loading: LottieAnimationView? = null
-    private var aniWrong: LottieAnimationView? = null
-    private var aniCorrect: LottieAnimationView? = null
     private var globTimer: CountDownTimer? = null
     private var quizQuestion: TextView? = null
     private var imgCategory: ImageView? = null
-    private var txtWrong: TextView? = null
-    private var txtCorrect: TextView? = null
     private var txtQuestion: TextView? = null
     private var txtTimer: TextView? = null
     private var wrong: Button? = null
@@ -68,11 +61,7 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
         loading = findViewById(R.id.ani_loading)
         quizQuestion = findViewById(R.id.txt_quizQuestion)
 
-        aniWrong = findViewById(R.id.ani_wrong)
-        aniCorrect = findViewById(R.id.ani_correct)
-        txtWrong = findViewById(R.id.txt_wrong)
         txtTimer = findViewById(R.id.txt_timer)
-        txtCorrect = findViewById(R.id.txt_correct)
         imgCategory = findViewById(R.id.img_category)
         txtQuestion = findViewById(R.id.txt_question_count)
 
@@ -80,9 +69,6 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
         explain!!.setOnClickListener(this)
         correct!!.setOnClickListener(this)
         next!!.setOnClickListener(this)
-        //next!!.visibility = View.GONE
-        txtWrong!!.visibility = View.GONE
-        txtCorrect!!.visibility = View.GONE
         txtQuestion!!.visibility = View.GONE
 
         MobileAds.initialize(this) {}
@@ -90,9 +76,9 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
         val adRequest = AdRequest.Builder().build()
         mAdView.loadAd(adRequest)
 
-        // Trying new DB way
-        questionsViewModel = ViewModelProviders.of(this).get(QuestionsViewModel::class.java)
-        val intent: Intent = getIntent()
+        // Get Data from database using ViewModel
+        questionsViewModel = ViewModelProvider(this).get(QuestionsViewModel::class.java)
+        val intent: Intent = intent
         val category: String = intent.getStringExtra("choice") ?: "Q"   // If value null, Q
         viewQuestions(category)
         // Set Image based on chosen category
@@ -103,12 +89,11 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
             "Random"-> imgCategory!!.setImageResource(R.drawable.random)
         }
     }
-
     // Call Animation on click
     override fun onClick(v: View) {
         when (v.id) {
-            R.id.btn_fact -> questionAnimation("Fact")
-            R.id.btn_fake -> questionAnimation("Fake")
+            R.id.btn_fact -> answerAnimation("Fact")
+            R.id.btn_fake -> answerAnimation("Fake")
             R.id.btn_next -> nextQuestion()
             R.id.btn_explain -> {
                 // Set Up Dialog box
@@ -133,32 +118,19 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             val builder = AlertDialog.Builder(this)
             val inflater = layoutInflater
-            // Set view for dialog
             val dialV = inflater.inflate(R.layout.leave_view, null)
             builder.setView(dialV)
-            // Find buttons in layout
             val yes: Button = dialV.findViewById(R.id.btn_yes)
             val no: Button = dialV.findViewById(R.id.btn_no)
-            // Create dialog box and show
             val dialog: AlertDialog = builder.create()
             dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
             dialog.show()
             Log.d(this.javaClass.name, "back button pressed")
-            // 'Yes' clicked; exit quiz
-            yes.setOnClickListener {
-                dialog.dismiss()
-                val intent = Intent(this@QuizActivity, MainActivity::class.java)
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                startActivity(intent)
-            }
-            // 'No' clicked; dismiss
-            no.setOnClickListener {
-                dialog.dismiss()
-            }
+            setBack(yes)
+            no.setOnClickListener { dialog.dismiss() }
         }
         return super.onKeyDown(keyCode, event)
     }
-
     // Observes the questions and adapts
     private fun viewQuestions(category: String) {
         if(questionList.isNullOrEmpty()){ hideViews("Start") }
@@ -172,7 +144,7 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
     }
     //TODO: Set up error handling in case of DB issue. Inform user of problem and quit to MainActivity
     //Set-up next question
-    private fun nextQuestion() { //Hide views while loading next question
+    private fun nextQuestion(){
         if(questionsViewModel.currentQuestionIndex >= questionList?.size ?: 0) {
             questionsViewModel.currentQuestionIndex = 0
         }
@@ -180,15 +152,13 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
         setUpGame()
     }
     // Set Up Controls
-    private fun setUpGame() {
+    private fun setUpGame(){
         txt_quizQuestion.text = currentQuestion.Question
         qAns = currentQuestion.Answer
         qExplain = currentQuestion.Explain
         temp = hideViews("Next")
-        if(temp == 1){
+        if(temp == 1)
             showGameEnd()
-            return
-        }
         else{
             thread {
                 Thread.sleep(2000)
@@ -198,14 +168,13 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
     }
     private fun showViews(){
         // Bring buttons and text back
-        showNormal()
+        mAdView.visibility = View.VISIBLE
+        txtTimer!!.visibility = View.VISIBLE
+        quizQuestion!!.visibility = View.VISIBLE
+        imgCategory!!.visibility = View.VISIBLE
         wrong!!.visibility = View.VISIBLE
         correct!!.visibility = View.VISIBLE
         txtQuestion!!.visibility = View.GONE
-
-        // Reset loading animation and hide it
-        loading!!.progress = 0f
-        loading!!.pauseAnimation()
         loading!!.visibility = View.GONE
 
         // Set up Game Timer
@@ -220,7 +189,7 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
                         txtTimer!!.setTextColor(Color.parseColor("#FF0000"))
                 }
             }
-            override fun onFinish() {
+            override fun onFinish(){
                 setButtons()
                 next!!.visibility = View.VISIBLE
             }
@@ -230,7 +199,7 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
     }
     private fun hideViews(option: String): Int {
         // Play loading animation and Commence set-up
-        if(option == "Start") {
+        if(option == "Start"){
             loading!!.visibility = View.VISIBLE
             loading!!.playAnimation()
         }
@@ -239,18 +208,16 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
             txtQuestion!!.text = ("Question " + questionsViewModel.currentQuestionIndex)
             if(questionsViewModel.currentQuestionIndex == 20) {
                 txtQuestion!!.text = ("Last Question!")
-                loop = 1;
+                loop = 1
             }
-            else if(loop == 1) {
+            else if(loop == 1){
                 txtQuestion!!.text = ("Game Over")
                 loop = 2
             }
             txtQuestion!!.visibility = View.VISIBLE
-
             val myAnim = AnimationUtils.loadAnimation(this, R.anim.expand)
             val interpolator = Bounce(0.2, 30.0)
             myAnim.interpolator = interpolator
-
             txtQuestion!!.startAnimation(myAnim)
         }
         explain!!.visibility = View.GONE
@@ -265,67 +232,36 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
         return 0
     }
     //Based on Answer, Decide click outcome
-    private fun questionAnimation(choice: String?) {
-        if(choice == "Fact" && qAns == true || choice == "Fake" && qAns == false){
-            answerAnimation("Correct")      // Play Correct Animation
-        }
-        else{ answerAnimation("Wrong") }    // Play wrong animation
-        setButtons()
-    }
-    private fun answerAnimation(answer: String) {
+    private fun answerAnimation(choice: String){
         globTimer!!.cancel()
         setButtons()
-        mAdView.visibility = View.GONE
-        quizQuestion!!.visibility = View.GONE
-        imgCategory!!.visibility = View.GONE
-        txtTimer!!.visibility = View.GONE
-        if(answer == "Correct") {
-            txtCorrect!!.visibility = View.VISIBLE
-            aniCorrect!!.visibility = View.VISIBLE
-            aniCorrect!!.playAnimation()
+        val manager = supportFragmentManager
+        val transaction = manager.beginTransaction()
+        if(choice == "Fact" && qAns == true || choice == "Fake" && qAns == false) {
+            val correctFragment = CorrectFragment()
+            transaction.replace(R.id.quiz_fragment, correctFragment)
+            transaction.addToBackStack(null)
+            transaction.commit()
         }
-        else if(answer == "Wrong"){
-            txtWrong!!.visibility = View.VISIBLE
-            aniWrong!!.visibility = View.VISIBLE
-            aniWrong!!.playAnimation()
+        else{
+            val correctFragment = WrongFragment()
+            transaction.replace(R.id.quiz_fragment, correctFragment)
+            transaction.addToBackStack(null)
+            transaction.commit()
         }
-        val layout: ConstraintLayout = findViewById(R.id.quiz_layout);
-        layout.setBackgroundResource(R.color.black)
-        val fadeIn = AnimationUtils.loadAnimation(this, R.anim.layout_fade_in)
-        layout.startAnimation(fadeIn)
-
-        fadeIn.setAnimationListener(object : Animation.AnimationListener {
-            override fun onAnimationStart(animation: Animation) {}
-            override fun onAnimationEnd(animation: Animation) {}
-            override fun onAnimationRepeat(animation: Animation) {}
-        })
-        thread {
-            Thread.sleep(2200)
-                runOnUiThread {
-                    if(answer == "Correct") {
-                        aniCorrect!!.visibility = View.GONE
-                        txtCorrect!!.visibility = View.GONE
-                    }
-                    else if(answer == "Wrong"){
-                        txtWrong!!.visibility = View.GONE
-                        aniWrong!!.visibility = View.GONE
-                    }
-                    showNormal()
-                    next!!.visibility = View.VISIBLE
-                    explain!!.visibility = View.VISIBLE
-                    layout.setBackgroundResource(R.drawable.background)
-                }
-        }
+        next!!.visibility = View.VISIBLE
+        explain!!.visibility = View.VISIBLE
     }
-    private fun setButtons() {
+    private fun setButtons(){
         correct!!.visibility = View.GONE
         wrong!!.visibility = View.GONE
     }
-    private fun showNormal(){
-        mAdView.visibility = View.VISIBLE
-        txtTimer!!.visibility = View.VISIBLE
-        quizQuestion!!.visibility = View.VISIBLE
-        imgCategory!!.visibility = View.VISIBLE
+    private fun setBack(btn: Button){
+        btn.setOnClickListener {
+            val intent = Intent(this@QuizActivity, MainActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            startActivity(intent)
+        }
     }
     private fun showGameEnd(){
         setButtons()
@@ -336,10 +272,6 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
         explain!!.visibility = View.GONE
         quizQuestion!!.visibility = View.VISIBLE
         quizQuestion!!.text = "You have completed all questions for this category, but more are coming soon!"
-        next!!.setOnClickListener {
-            val intent = Intent(this@QuizActivity, MainActivity::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-            startActivity(intent)
-        }
+        setBack(next!!)
     }
 }
