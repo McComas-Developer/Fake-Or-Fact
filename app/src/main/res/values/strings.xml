@@ -14,11 +14,19 @@
     <string name="art">Art</string>
     <string name="random">Random</string>
 
-    <!-- Quiz Fragment Messages -->
+    <!-- Quiz Activity Messages -->
     <string name="quiz_question">Hello Empty Question!</string>
     <string name="quiz_fake">Fake</string>
+    <string name="quiz_explain">Explain</string>
     <string name="quiz_fact">Fact</string>
+    <string name="quiz_timer">0:20</string>
+    <string name="quiz_count">Question 1</string>
     <string name="title_activity_settings">Settings</string>
+
+    <!-- Quiz Fragment Messages -->
+    <string name="frag_score_title">Here is the lineup!</string>
+    <string name="frag_player">No Player!</string>
+    <string name="frag_player_score">No Score!</string>
 
     <!-- Start/Join Game Messages -->
     <string name="enter_code">Please enter the game code</string>
@@ -28,6 +36,9 @@
     <string name="enter_game_name">Please enter your codename</string>
     <string name="enter_game_name_title">Enter Codename</string>
     <string name="next_quiz_question">Next Question</string>
+    <string name="wait">Waiting for Players…</string>
+    <string name="title_code">Code:</string>
+    <string name="code">Empty Code!</string>
 
     <!-- Animation Messages -->
     <string name="correct_ans">You Got it Right!</string>
@@ -39,6 +50,18 @@
     <string name="info_box_dialog">Fake or Fact is a knowledge based trivia game designed by an aspiring
         android developer; Michael McComas. Test your skill by determining whether or not the
         statements you are presented with are true or false. Good luck and have fun!</string>
+    <string name="leave_title">Are you sure you want to leave the game?</string>
+    <string name="game_name">Your codename is the name used to identify you as a player! Type any
+        name that suits you.</string>
+    <string name="game_code">The game code is given when a user creates a game and they begin waiting
+        for players. Use the code given on this waiting screen to join the game for a maximum of 4
+        players!</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="okay">Okay</string>
+    <string name="explain">Explanation</string>
+    <string name="game_code_title">Game Code</string>
+    <string name="game_name_title">Game CodeName</string>
     <string name="dark_mode_box_title">Enable Dark Mode</string>
     <string name="contact_title">Contact Us</string>
     <string name="info_title">About</string>
@@ -57,5 +80,8 @@
     <string name="attachment_summary_on">Automatically download attachments for incoming emails
     </string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

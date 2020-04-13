@@ -1,25 +1,28 @@
-package com.michael.fakeorfact.game;
+package com.michael.fakeorfact.game.multi;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProviders;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.michael.fakeorfact.R;
+import com.michael.fakeorfact.game.multi.WaitScreen;
+import com.michael.fakeorfact.model.QuestionsViewModel;
+
+import java.util.UUID;
 
 public class StartGame extends AppCompatActivity implements View.OnClickListener {
-    private Button art;
-    private Button history;
-    private Button science;
-    private Button random;
     private String chosen;
-    private Button start;
+    private EditText codeName;
     private ProgressBar progStart;
-
+    private QuestionsViewModel questionsViewModel;
     private LottieAnimationView ani_unfocus;
     private LottieAnimationView[] ani = new LottieAnimationView[4];
     private int[] ani_id = {R.id.ani_start_historyCheck, R.id.ani_start_scienceCheck,
@@ -30,12 +33,20 @@ public class StartGame extends AppCompatActivity implements View.OnClickListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_game);
 
+        Button art;
+        Button history;
+        Button science;
+        Button random;
+
+        questionsViewModel = ViewModelProviders.of(this).get(QuestionsViewModel.class);
+
         art = findViewById(R.id.btn_Start_Art);
         history = findViewById(R.id.btn_Start_History);
         science = findViewById(R.id.btn_Start_Science);
         random = findViewById(R.id.btn_Start_Random);
-        start = findViewById(R.id.btn_start_game);
+        Button start = findViewById(R.id.btn_start_game);
         progStart = findViewById(R.id.start_progBar);
+        codeName = findViewById(R.id.editTxt_start_codeName);
 
         art.setOnClickListener(this);
         history.setOnClickListener(this);
@@ -62,9 +73,35 @@ public class StartGame extends AppCompatActivity implements View.OnClickListener
             SetAnimationFocus(ani_unfocus, ani[3], "Random");
         }
         else if(v.getId() == R.id.btn_start_game){
-            progStart.setVisibility(View.VISIBLE);
-            Toast.makeText(this, "Made it!", Toast.LENGTH_SHORT).show();
+            if(!checkAnimations()){
+                Toast.makeText(this, "To create a game, " +
+                        "please select a category", Toast.LENGTH_SHORT).show();
+            }
+            else if(codeName.getText().toString().matches("")){
+                Toast.makeText(this, "To create a game, " +
+                        "please enter a codename", Toast.LENGTH_SHORT).show();
+            }
+            else{
+                progStart.setVisibility(View.VISIBLE);
+                String code = UUID.randomUUID().toString().substring(0, 7);
+                String playerID = UUID.randomUUID().toString().substring(0, 7);
+                questionsViewModel.createGame(code, codeName.getText().toString(), playerID);
+                Intent i = new Intent(this, WaitScreen.class);
+                i.putExtra("code", code);
+                i.putExtra("ID", playerID);
+                startActivity(i);
+            }
         }
+    }
+    // Determine if a category has been selected
+    public boolean checkAnimations(){
+        if(ani[0].getProgress() == 0) {
+            if (ani[1].getProgress() == 0) {
+                if (ani[2].getProgress() == 0) {
+                    if (ani[3].getProgress() == 0) {
+                        return false;
+                    }}}}
+        return true;
     }
     // Play selected button animation and reset previously chosen one
     private void SetAnimationFocus(LottieAnimationView ani_unfocus, LottieAnimationView ani_focus,
@@ -74,9 +111,5 @@ public class StartGame extends AppCompatActivity implements View.OnClickListener
         ani_focus.playAnimation();
         chosen = choice;
         this.ani_unfocus = ani_focus;
-    }
-    //TODO: Create function for game creation with access code
-    private void createGame(){
-
     }
 }
