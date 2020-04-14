@@ -11,7 +11,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.michael.fakeorfact.MainActivity
@@ -38,7 +38,7 @@ class WaitScreen : AppCompatActivity() {
         btnStart = findViewById(R.id.btn_begin)
         playerView = findViewById(R.id.player_view)
 
-        questionsViewModel = ViewModelProviders.of(this).get(QuestionsViewModel::class.java)
+        questionsViewModel = ViewModelProvider(this).get(QuestionsViewModel::class.java)
 
         // Grab passed options for game: Start game vs. Join Game
         val intent: Intent = getIntent()

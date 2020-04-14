@@ -9,7 +9,7 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import com.google.firebase.firestore.FirebaseFirestore
 import com.michael.fakeorfact.R
 import com.michael.fakeorfact.game.multi.WaitScreen
@@ -28,7 +28,7 @@ class JoinGame : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_join_game)
 
-        questionsViewModel = ViewModelProviders.of(this).get(QuestionsViewModel::class.java)
+        questionsViewModel = ViewModelProvider(this).get(QuestionsViewModel::class.java)
         btnJoin = findViewById(R.id.btn_join_game)
         code = findViewById(R.id.editTxt_gameCode)
         progBar = findViewById(R.id.join_progBar)

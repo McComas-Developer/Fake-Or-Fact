@@ -47,9 +47,9 @@
     <!-- Dialogue Box -->
     <string name="contact_box_dialog">If you have any questions, concerns, or would like to
         report an issue with the app, please email us at support.fakeorfact@gmail.com</string>
-    <string name="info_box_dialog">Fake or Fact is a knowledge based trivia game designed by an aspiring
-        android developer; Michael McComas. Test your skill by determining whether or not the
-        statements you are presented with are true or false. Good luck and have fun!</string>
+    <string name="info_box_dialog">Fake or Fact is a knowledge based trivia game designed by android developer
+        Michael McComas. Test your skill by determining whether or not the
+        questions you are presented with are fake or fact. Good luck and have fun!</string>
     <string name="leave_title">Are you sure you want to leave the game?</string>
     <string name="game_name">Your codename is the name used to identify you as a player! Type any
         name that suits you.</string>
@@ -80,8 +80,5 @@
     <string name="attachment_summary_on">Automatically download attachments for incoming emails
     </string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
