@@ -9,7 +9,10 @@
         android:roundIcon="@mipmap/fakeorfact_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".game.multi.MultiPlayer"></activity>
+        <activity android:name=".Egg"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".game.multi.MultiPlayer" />
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
