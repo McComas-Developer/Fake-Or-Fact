@@ -9,16 +9,20 @@
         android:roundIcon="@mipmap/fakeorfact_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <!-- Ad Info -->
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-9060745523188945~8738030290" />
+        <!-- Enable Log for Performance Tests -->
+        <meta-data
+            android:name="firebase_performance_logcat_enabled"
+            android:value="true" />
+
+        <activity android:name=".game.multi.WaitScreen" />
         <activity android:name=".Egg"
             android:screenOrientation="portrait"/>
 
         <activity android:name=".game.multi.MultiPlayer" />
-
-        <meta-data
-            android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-9060745523188945~8738030290" />
-
-        <activity android:name=".game.multi.WaitScreen" />
         <activity
             android:name=".game.QuizActivity"
             android:screenOrientation="portrait" />
