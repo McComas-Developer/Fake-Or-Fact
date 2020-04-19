@@ -41,7 +41,7 @@ class Egg : AppCompatActivity() {
         })
         // Show congrats
         val myAnim = AnimationUtils.loadAnimation(this, R.anim.expand)
-        val interpolator = MyBounceInterpolator(0.2, 30.0)
+        val interpolator = BounceInterpolator(0.2, 30.0)
         myAnim.interpolator = interpolator
         congrats!!.startAnimation(myAnim)
         // Change Cat based on count

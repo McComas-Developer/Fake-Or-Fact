@@ -21,6 +21,7 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
 import com.michael.fakeorfact.MainActivity
+import com.michael.fakeorfact.BounceInterpolator
 import com.michael.fakeorfact.R
 import com.michael.fakeorfact.db.Question
 import com.michael.fakeorfact.model.QuestionsViewModel
@@ -205,7 +206,7 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
         else if(option == "Next"){
             loading!!.visibility = View.GONE
             txtQuestion!!.text = ("Question " + questionsViewModel.currentQuestionIndex)
-            if(questionsViewModel.currentQuestionIndex == 20) {
+            if(questionsViewModel.currentQuestionIndex == 2) {
                 txtQuestion!!.text = ("Last Question!")
                 loop = 1
             }
@@ -215,7 +216,7 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
             }
             txtQuestion!!.visibility = View.VISIBLE
             val myAnim = AnimationUtils.loadAnimation(this, R.anim.expand)
-            val interpolator = Bounce(0.2, 30.0)
+            val interpolator = BounceInterpolator(0.2, 30.0)
             myAnim.interpolator = interpolator
             txtQuestion!!.startAnimation(myAnim)
         }
@@ -267,10 +268,10 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
         imgCategory!!.visibility = View.GONE
         txtTimer!!.visibility = View.GONE
         next!!.visibility = View.VISIBLE
-        next!!.text = "Go to Main Menu"
+        next!!.text = resources.getString(R.string.game_over)
         explain!!.visibility = View.GONE
         quizQuestion!!.visibility = View.VISIBLE
-        quizQuestion!!.text = "You have completed all questions for this category, but more are coming soon!"
+        quizQuestion!!.text = resources.getString(R.string.coming_soon)
         setBack(next!!)
     }
 }

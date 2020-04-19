@@ -1,5 +1,6 @@
 package com.michael.fakeorfact.model
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -30,8 +31,8 @@ class QuestionsViewModel: ViewModel() {
     fun setAdapter(mAdapt: PlayerViewAdapter, mView: RecyclerView){
         repository.setAdapter(mAdapt, mView)
     }
-    fun createGame(code: String, firstPlayer: String, ID: String){
-        repository.createGame(code, firstPlayer, ID)
+    fun createGame(code: String, firstPlayer: String, ID: String, From: Context){
+        repository.createGame(code, firstPlayer, ID, From)
     }
     fun deleteGame(code: String){
         repository.deleteGame(code)

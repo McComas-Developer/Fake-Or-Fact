@@ -1,4 +1,4 @@
-package com.michael.fakeorfact.game
+package com.michael.fakeorfact.game.multi
 
 import android.content.Intent
 import android.graphics.Color
@@ -12,7 +12,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.google.firebase.firestore.FirebaseFirestore
 import com.michael.fakeorfact.R
-import com.michael.fakeorfact.game.multi.WaitScreen
 import com.michael.fakeorfact.model.QuestionsViewModel
 import java.util.*
 
@@ -99,6 +98,8 @@ class JoinGame : AppCompatActivity() {
                         "typed correctly.", Toast.LENGTH_SHORT).show()
             } else {
                 Log.d("VerifyGame", "Can't verify existence: ", task.exception)
+                showDialogBox(resources.getString(R.string.wrong_title),
+                        resources.getString(R.string.wrong_dialog))
             }
             progBar!!.visibility = View.GONE
         }

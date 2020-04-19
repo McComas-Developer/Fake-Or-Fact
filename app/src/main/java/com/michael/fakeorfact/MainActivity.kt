@@ -1,8 +1,6 @@
 package com.michael.fakeorfact
 
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.View
 import android.view.animation.Animation
@@ -11,7 +9,9 @@ import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.ads.MobileAds
+import com.michael.fakeorfact.game.multi.JoinGame
 import com.michael.fakeorfact.game.QuizSelect
+import com.michael.fakeorfact.game.multi.StartGame
 import java.util.*
 
 class MainActivity : AppCompatActivity(), View.OnClickListener{
@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener{
         timer.scheduleAtFixedRate(object : TimerTask(){
             override fun run(){
                 // Use bounce interpolator with amplitude 0.2 and frequency 20
-                val interpolator = MyBounceInterpolator(0.2, 30.0)
+                val interpolator = BounceInterpolator(0.2, 30.0)
                 myAnim.interpolator = interpolator
                 settings!!.startAnimation(myAnim)
             }
@@ -74,10 +74,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener{
                 afterClick()
                 startActivity(Intent(this@MainActivity, QuizSelect::class.java))
             }
-            R.id.btn_startGame ->                 //afterClick();
+            R.id.btn_startGame -> {                //afterClick();
                 Toast.makeText(this, "Multi-player Coming Soon :D", Toast.LENGTH_SHORT).show()
-            R.id.btn_joinGame ->                 //afterClick();
+                startActivity(Intent(this@MainActivity, StartGame::class.java))
+            }
+            R.id.btn_joinGame -> {                //afterClick();
                 Toast.makeText(this, "Multi-player Coming Soon :D", Toast.LENGTH_SHORT).show()
+                startActivity(Intent(this@MainActivity, JoinGame::class.java))
+            }
             R.id.img_btn_dark -> {
                 msg = "Dark Mode Coming Soon"
                 Toast.makeText(this, msg, Toast.LENGTH_LONG).show()

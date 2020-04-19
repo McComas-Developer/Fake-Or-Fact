@@ -4,7 +4,7 @@ import android.view.animation.Interpolator
 import kotlin.math.cos
 import kotlin.math.pow
 
-internal class MyBounceInterpolator(amplitude: Double, frequency: Double) : Interpolator {
+internal class BounceInterpolator(amplitude: Double, frequency: Double) : Interpolator {
     private var mAmplitude = 1.0
     private var mFrequency = 10.0
     override fun getInterpolation(time: Float): Float {

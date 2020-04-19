@@ -3,10 +3,7 @@ package com.michael.fakeorfact.game.multi
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ProgressBar
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.airbnb.lottie.LottieAnimationView
@@ -45,32 +42,26 @@ class StartGame : AppCompatActivity(), View.OnClickListener {
         }
         aniUnfocus = ani[0]
     }
-
+    // Determine option when clicked
     override fun onClick(v: View){
-        if (v.id == R.id.btn_Start_Art){
-            setAnimationFocus(aniUnfocus, ani[2], "Art")
-        } else if (v.id == R.id.btn_Start_History){
-            setAnimationFocus(aniUnfocus, ani[0], "History")
-        } else if (v.id == R.id.btn_Start_Science){
-            setAnimationFocus(aniUnfocus, ani[1], "Science")
-        } else if (v.id == R.id.btn_Start_Random){
-            setAnimationFocus(aniUnfocus, ani[3], "Random")
-        } else if (v.id == R.id.btn_start_game){
-            if (!checkAnimations()){
-                Toast.makeText(this, "To create a game, " +
-                        "please select a category", Toast.LENGTH_SHORT).show()
-            } else if (codeName!!.text.toString().trim().isEmpty()) {
-                Toast.makeText(this, "To create a game, " +
-                        "please enter a codename", Toast.LENGTH_SHORT).show()
-            } else {
-                progStart!!.visibility = View.VISIBLE
-                val code = UUID.randomUUID().toString().substring(0, 7)
-                val playerID = UUID.randomUUID().toString().substring(0, 7)
-                questionsViewModel!!.createGame(code, codeName!!.text.toString(), playerID)
-                val i = Intent(this, WaitScreen::class.java)
-                i.putExtra("code", code)
-                i.putExtra("ID", playerID)
-                startActivity(i)
+        when (v.id){
+            R.id.btn_Start_Art -> setAnimationFocus(aniUnfocus, ani[2], "Art")
+            R.id.btn_Start_History -> setAnimationFocus(aniUnfocus, ani[0], "History")
+            R.id.btn_Start_Science -> setAnimationFocus(aniUnfocus, ani[1], "Science")
+            R.id.btn_Start_Random ->  setAnimationFocus(aniUnfocus, ani[3], "Random")
+            R.id.btn_start_game -> {
+                if (!checkAnimations()){
+                    Toast.makeText(this, "To create a game, " +
+                            "please select a category", Toast.LENGTH_SHORT).show()
+                } else if (codeName!!.text.toString().trim().isEmpty()) {
+                    Toast.makeText(this, "To create a game, " +
+                            "please enter a codename", Toast.LENGTH_SHORT).show()
+                } else {
+                    progStart!!.visibility = View.VISIBLE
+                    val code = UUID.randomUUID().toString().substring(0, 7)
+                    val playerID = UUID.randomUUID().toString().substring(0, 7)
+                    questionsViewModel!!.createGame(code, codeName!!.text.toString(), playerID, this)
+                }
             }
         }
     }
