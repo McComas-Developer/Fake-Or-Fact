@@ -14,6 +14,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.airbnb.lottie.LottieAnimationView
@@ -237,18 +238,13 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
         setButtons()
         val manager = supportFragmentManager
         val transaction = manager.beginTransaction()
-        if(choice == "Fact" && qAns == true || choice == "Fake" && qAns == false) {
-            val correctFragment = CorrectFragment()
-            transaction.replace(R.id.quiz_fragment, correctFragment)
-            transaction.addToBackStack(null)
-            transaction.commit()
-        }
-        else{
-            val correctFragment = WrongFragment()
-            transaction.replace(R.id.quiz_fragment, correctFragment)
-            transaction.addToBackStack(null)
-            transaction.commit()
-        }
+        val fragment: Fragment = if(choice == "Fact" && qAns == true || choice == "Fake" && qAns == false)
+            CorrectFragment()
+        else
+            WrongFragment()
+        transaction.replace(R.id.quiz_fragment, fragment)
+        transaction.addToBackStack(null)
+        transaction.commit()
         next!!.visibility = View.VISIBLE
         explain!!.visibility = View.VISIBLE
     }
