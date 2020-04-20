@@ -1,18 +1,24 @@
 package com.michael.fakeorfact.game.multi
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.*
+import android.widget.Button
+import android.widget.EditText
+import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.airbnb.lottie.LottieAnimationView
+import com.michael.fakeorfact.misc.Dialog
+import com.michael.fakeorfact.misc.InternetCheck
 import com.michael.fakeorfact.R
 import com.michael.fakeorfact.model.QuestionsViewModel
 import java.util.*
 
+
 class StartGame : AppCompatActivity(), View.OnClickListener {
     private var chosen: String? = null
+    private var dialog = Dialog()
     private var codeName: EditText? = null
     private var progStart: ProgressBar? = null
     private var questionsViewModel: QuestionsViewModel? = null
@@ -57,10 +63,28 @@ class StartGame : AppCompatActivity(), View.OnClickListener {
                     Toast.makeText(this, "To create a game, " +
                             "please enter a codename", Toast.LENGTH_SHORT).show()
                 } else {
+                    // If fields are filled, but name is too long, notify user
+                    if(codeName!!.text.toString().trim().length > 25){
+                        Toast.makeText(this, "Please enter a Code Name, " +
+                                "less than 25 characters", Toast.LENGTH_SHORT).show()
+                        return
+                    }
                     progStart!!.visibility = View.VISIBLE
                     val code = UUID.randomUUID().toString().substring(0, 7)
                     val playerID = UUID.randomUUID().toString().substring(0, 7)
-                    questionsViewModel!!.createGame(code, codeName!!.text.toString(), playerID, this)
+                    // Check internet connection, and create game if connected (notify otherwise)
+                    InternetCheck(object : InternetCheck.Consumer {
+                        override fun accept(internet: Boolean?) {
+                            if (internet!!)
+                                questionsViewModel!!.createGame(code, codeName!!.text.toString(),
+                                        playerID, this@StartGame)
+                            else {
+                                dialog.showDialogBox(resources.getString(R.string.wrong_title),
+                                        resources.getString(R.string.wrong_dialog), this@StartGame)
+                                progStart!!.visibility = View.GONE
+                            }
+                        }
+                    })
                 }
             }
         }

@@ -109,7 +109,7 @@ class QuestionsImp(): QuestionRepository {
         // If more than 1 player, remove player
         if(mCount > 1) {
             docRef.update(updates).addOnCompleteListener { }
-            Log.d("RemovePlayer", "Remove com.michael.fakeorfact.player with ID = $ID")
+            Log.d("RemovePlayer", "Remove player with ID = $ID")
             mCount--
         }
         // If only one player, delete game

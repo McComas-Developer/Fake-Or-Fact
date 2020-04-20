@@ -22,7 +22,7 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
 import com.michael.fakeorfact.MainActivity
-import com.michael.fakeorfact.BounceInterpolator
+import com.michael.fakeorfact.misc.BounceInterpolator
 import com.michael.fakeorfact.R
 import com.michael.fakeorfact.db.Question
 import com.michael.fakeorfact.model.QuestionsViewModel
@@ -143,7 +143,6 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
             nextQuestion()
         })
     }
-    //TODO: Set up error handling in case of DB issue. Inform user of problem and quit to MainActivity
     //Set-up next question
     private fun nextQuestion(){
         if(questionsViewModel.currentQuestionIndex >= questionList?.size ?: 0) {
