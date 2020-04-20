@@ -75,11 +75,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener{
             }
             R.id.btn_startGame -> {                //afterClick();
                 Toast.makeText(this, "Multi-player Coming Soon :D", Toast.LENGTH_SHORT).show()
-                startActivity(Intent(this@MainActivity, StartGame::class.java))
+                //startActivity(Intent(this@MainActivity, StartGame::class.java))
             }
             R.id.btn_joinGame -> {                //afterClick();
                 Toast.makeText(this, "Multi-player Coming Soon :D", Toast.LENGTH_SHORT).show()
-                startActivity(Intent(this@MainActivity, JoinGame::class.java))
+                //startActivity(Intent(this@MainActivity, JoinGame::class.java))
             }
             R.id.img_btn_dark -> Toast.makeText(this, "Dark Mode Coming Soon", Toast.LENGTH_LONG).show()
             R.id.img_btn_contact -> {
