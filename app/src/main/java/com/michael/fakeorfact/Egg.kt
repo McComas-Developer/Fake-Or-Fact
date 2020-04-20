@@ -10,12 +10,13 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.airbnb.lottie.LottieAnimationView
+import com.michael.fakeorfact.misc.BounceInterpolator
 
 class Egg : AppCompatActivity() {
     var confetti: LottieAnimationView? = null
-    var congrats: TextView? = null
+    private var congrats: TextView? = null
     private var image: ImageView? = null
-    var eggBtn: Button? = null
+    private var eggBtn: Button? = null
     var count: Int = 1
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,7 +42,7 @@ class Egg : AppCompatActivity() {
         })
         // Show congrats
         val myAnim = AnimationUtils.loadAnimation(this, R.anim.expand)
-        val interpolator = MyBounceInterpolator(0.2, 30.0)
+        val interpolator = BounceInterpolator(0.2, 30.0)
         myAnim.interpolator = interpolator
         congrats!!.startAnimation(myAnim)
         // Change Cat based on count

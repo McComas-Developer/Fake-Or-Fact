@@ -82,21 +82,19 @@
         android:id="@+id/img_icon"
         android:clickable="true"
         android:focusable="true"
-        android:layout_width="wrap_content"
+        android:layout_width="50dp"
         android:layout_height="50dp"
         app:srcCompat="@drawable/search"
-        tools:layout_editor_absoluteX="14dp"
-        tools:layout_editor_absoluteY="2dp"
         android:layout_marginBottom="30dp"
-        android:layout_marginStart="5dp"
+        android:layout_marginStart="15dp"
         android:contentDescription="@string/settings"
         app:layout_constraintBottom_toTopOf="@+id/txt_appName"
         app:layout_constraintLeft_toLeftOf="parent"/>
 
     <ImageButton
         android:id="@+id/img_btn_info"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:scaleType="fitCenter"
         android:adjustViewBounds="true"
         android:contentDescription="@string/info_title"
@@ -110,8 +108,10 @@
 
     <ImageButton
         android:id="@+id/img_btn_dark"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
+        android:minWidth="80dp"
+        android:minHeight="80dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:scaleType="fitCenter"
         android:adjustViewBounds="true"
         android:contentDescription="@string/credit"
@@ -124,8 +124,8 @@
 
     <ImageButton
         android:id="@+id/img_btn_contact"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:scaleType="fitCenter"
         android:adjustViewBounds="true"
         android:contentDescription="@string/contact_title"

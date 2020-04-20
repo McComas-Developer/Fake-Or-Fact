@@ -164,6 +164,7 @@
         android:id="@+id/editTxt_start_codeName"
         android:layout_width="300dp"
         android:gravity="center"
+        android:inputType="text"
         android:layout_height="50dp"
         android:textColor="@android:color/white"
         android:background="@drawable/textbox_outline"
@@ -171,7 +172,8 @@
         android:hint="@string/enter_game_name"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txt_codename_title"/>
+        app:layout_constraintTop_toBottomOf="@id/txt_codename_title"
+        android:autofillHints="@string/enter_game_name" />
     <Button
         android:id="@+id/btn_start_game"
         android:layout_width="300dp"

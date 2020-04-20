@@ -41,7 +41,7 @@ class WaitScreen : AppCompatActivity() {
         questionsViewModel = ViewModelProvider(this).get(QuestionsViewModel::class.java)
 
         // Grab passed options for game: Start game vs. Join Game
-        val intent: Intent = getIntent()
+        val intent: Intent = intent
         code = intent.getStringExtra("code") ?: "Error"
         playerID = intent.getStringExtra("ID") ?: "Error"
         txtCode!!.text = ("Code: $code")

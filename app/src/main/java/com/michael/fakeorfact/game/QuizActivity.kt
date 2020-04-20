@@ -14,6 +14,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.airbnb.lottie.LottieAnimationView
@@ -21,6 +22,7 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
 import com.michael.fakeorfact.MainActivity
+import com.michael.fakeorfact.misc.BounceInterpolator
 import com.michael.fakeorfact.R
 import com.michael.fakeorfact.db.Question
 import com.michael.fakeorfact.model.QuestionsViewModel
@@ -141,7 +143,6 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
             nextQuestion()
         })
     }
-    //TODO: Set up error handling in case of DB issue. Inform user of problem and quit to MainActivity
     //Set-up next question
     private fun nextQuestion(){
         if(questionsViewModel.currentQuestionIndex >= questionList?.size ?: 0) {
@@ -215,7 +216,7 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
             }
             txtQuestion!!.visibility = View.VISIBLE
             val myAnim = AnimationUtils.loadAnimation(this, R.anim.expand)
-            val interpolator = Bounce(0.2, 30.0)
+            val interpolator = BounceInterpolator(0.2, 30.0)
             myAnim.interpolator = interpolator
             txtQuestion!!.startAnimation(myAnim)
         }
@@ -236,18 +237,13 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
         setButtons()
         val manager = supportFragmentManager
         val transaction = manager.beginTransaction()
-        if(choice == "Fact" && qAns == true || choice == "Fake" && qAns == false) {
-            val correctFragment = CorrectFragment()
-            transaction.replace(R.id.quiz_fragment, correctFragment)
-            transaction.addToBackStack(null)
-            transaction.commit()
-        }
-        else{
-            val correctFragment = WrongFragment()
-            transaction.replace(R.id.quiz_fragment, correctFragment)
-            transaction.addToBackStack(null)
-            transaction.commit()
-        }
+        val fragment: Fragment = if(choice == "Fact" && qAns == true || choice == "Fake" && qAns == false)
+            CorrectFragment()
+        else
+            WrongFragment()
+        transaction.replace(R.id.quiz_fragment, fragment)
+        transaction.addToBackStack(null)
+        transaction.commit()
         next!!.visibility = View.VISIBLE
         explain!!.visibility = View.VISIBLE
     }
@@ -267,10 +263,10 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
         imgCategory!!.visibility = View.GONE
         txtTimer!!.visibility = View.GONE
         next!!.visibility = View.VISIBLE
-        next!!.text = "Go to Main Menu"
+        next!!.text = resources.getString(R.string.game_over)
         explain!!.visibility = View.GONE
         quizQuestion!!.visibility = View.VISIBLE
-        quizQuestion!!.text = "You have completed all questions for this category, but more are coming soon!"
+        quizQuestion!!.text = resources.getString(R.string.coming_soon)
         setBack(next!!)
     }
 }

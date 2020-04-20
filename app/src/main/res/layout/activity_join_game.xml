@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/background"
-    tools:context=".game.JoinGame"
+    tools:context=".game.multi.JoinGame"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <TextView
@@ -92,27 +92,27 @@
         app:layout_constraintTop_toBottomOf="@+id/editTxt_gameName"/>
     <ImageButton
         android:id="@+id/img_btn_info"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
         android:scaleType="fitCenter"
         android:adjustViewBounds="true"
         android:contentDescription="@string/info_title"
         android:background="?android:selectableItemBackground"
         app:srcCompat="@mipmap/info"
-        android:layout_marginTop="35dp"
+        android:layout_marginTop="30dp"
         android:layout_marginStart="10dp"
         app:layout_constraintTop_toBottomOf="@id/txt_EnterGameCode"
         app:layout_constraintLeft_toRightOf="@+id/editTxt_gameCode" />
     <ImageButton
         android:id="@+id/img_btn_info2"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
         android:scaleType="fitCenter"
         android:adjustViewBounds="true"
         android:contentDescription="@string/info_title"
         android:background="?android:selectableItemBackground"
         app:srcCompat="@mipmap/info"
-        android:layout_marginTop="35dp"
+        android:layout_marginTop="30dp"
         android:layout_marginStart="10dp"
         app:layout_constraintTop_toBottomOf="@id/txt_EnterGameName"
         app:layout_constraintLeft_toRightOf="@+id/editTxt_gameName" />
