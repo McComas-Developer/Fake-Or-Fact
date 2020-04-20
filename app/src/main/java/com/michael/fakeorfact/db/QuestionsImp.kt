@@ -1,11 +1,14 @@
 package com.michael.fakeorfact.db
 
+import android.content.Context
+import android.content.Intent
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
+import com.michael.fakeorfact.game.multi.WaitScreen
 import com.michael.fakeorfact.player.PlayerViewAdapter
 
 
@@ -61,14 +64,20 @@ class QuestionsImp(): QuestionRepository {
         return players
     }
     // Create a game w/ Access code and add its first player
-    override fun createGame(code: String, firstPlayer: String, ID: String) {
+    override fun createGame(code: String, firstPlayer: String, ID: String, From: Context) {
         val game: MutableMap<String, Any> = HashMap()
         mID = ID
         Log.d("CreateGame", "Got ID = $mID")
         game[mID!!] = firstPlayer
         db.collection("Games").document(code)
                 .set(game)
-                .addOnSuccessListener { Log.d("CreateGame", "Game successfully created!") }
+                .addOnSuccessListener {
+                    Log.d("CreateGame", "Game successfully created!")
+                    val i = Intent(From, WaitScreen::class.java)
+                    i.putExtra("code", code)
+                    i.putExtra("ID", mID)
+                    From.startActivity(i)
+                }
                 .addOnFailureListener { e -> Log.d("CreateGame", "Error creating game", e) }
     }
     // Delete Game based on Access Code
@@ -100,7 +109,7 @@ class QuestionsImp(): QuestionRepository {
         // If more than 1 player, remove player
         if(mCount > 1) {
             docRef.update(updates).addOnCompleteListener { }
-            Log.d("RemovePlayer", "Remove com.michael.fakeorfact.player with ID = $ID")
+            Log.d("RemovePlayer", "Remove player with ID = $ID")
             mCount--
         }
         // If only one player, delete game

@@ -1,22 +1,21 @@
-package com.michael.fakeorfact.game
+package com.michael.fakeorfact.game.multi
 
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.*
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.google.firebase.firestore.FirebaseFirestore
+import com.michael.fakeorfact.misc.Dialog
+import com.michael.fakeorfact.misc.InternetCheck
 import com.michael.fakeorfact.R
-import com.michael.fakeorfact.game.multi.WaitScreen
 import com.michael.fakeorfact.model.QuestionsViewModel
 import java.util.*
 
 class JoinGame : AppCompatActivity() {
+    private var dialog = Dialog()
     private var btnJoin: Button? = null
     private var codeName: EditText? = null
     private var code: EditText? = null
@@ -44,37 +43,37 @@ class JoinGame : AppCompatActivity() {
             if(code!!.text.toString().trim().isEmpty()){
                 Toast.makeText(this, "To Join a game, please enter a Code"
                         , Toast.LENGTH_SHORT).show()
-            }
+            }// If fields are filled, check internet connection, and join game if it exists
             else if(code!!.text.toString().trim().isNotEmpty() &&
                     codeName!!.text.toString().trim().isNotEmpty()){
+                // If fields are filled, but name is too long, notify user and quit
+                if(codeName!!.text.toString().trim().length > 25){
+                    Toast.makeText(this, "Please enter a Code Name, " +
+                            "less than 25 characters", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
                 progBar!!.visibility = View.VISIBLE
-                verifyGame()
+                InternetCheck(object : InternetCheck.Consumer {
+                    override fun accept(internet: Boolean?) {
+                        if (internet!!)
+                            verifyGame()
+                        else {
+                            dialog.showDialogBox(resources.getString(R.string.wrong_title),
+                                    resources.getString(R.string.wrong_dialog), this@JoinGame)
+                            progBar!!.visibility = View.GONE
+                        }
+                    }
+                })
             }
         }
         codeInfo.setOnClickListener {
-            showDialogBox(resources.getString(R.string.game_code_title),
-                    resources.getString(R.string.game_code))
+            dialog.showDialogBox(resources.getString(R.string.game_code_title),
+                    resources.getString(R.string.game_code), this@JoinGame)
         }
         nameInfo.setOnClickListener {
-            showDialogBox(resources.getString(R.string.game_name_title),
-                    resources.getString(R.string.game_name))
+            dialog.showDialogBox(resources.getString(R.string.game_name_title),
+                    resources.getString(R.string.game_name), this@JoinGame)
         }
-    }
-    private fun showDialogBox(mTitle: String, mMsg: String){
-        // Set Up Dialog box
-        val build = AlertDialog.Builder(this)
-        val inflater = layoutInflater
-        val dialV: View = inflater.inflate(R.layout.dialog_view, null)
-        build.setView(dialV)
-        val close = dialV.findViewById<Button>(R.id.btn_ok)
-        val title = dialV.findViewById<TextView>(R.id.txt_dialog_title)
-        val msg = dialV.findViewById<TextView>(R.id.txt_dialog)
-        title.text = mTitle
-        msg.text = mMsg
-        val box: AlertDialog = build.create()
-        box.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        close.setOnClickListener { box.dismiss() }
-        box.show()
     }
     private fun verifyGame(){
         val db = FirebaseFirestore.getInstance()

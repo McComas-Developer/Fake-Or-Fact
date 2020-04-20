@@ -44,6 +44,11 @@
     <string name="correct_ans">You Got it Right!</string>
     <string name="wrong_ans">Oops! Wrong Answer</string>
 
+    <!-- Game End -->
+    <string name="game_over">Go to Main Menu</string>
+    <string name="coming_soon">You have completed all questions for this category,
+        but more are coming soon!</string>
+
     <!-- Dialogue Box -->
     <string name="contact_box_dialog">If you have any questions, concerns, or would like to
         report an issue with the app, please email us at support.fakeorfact@gmail.com</string>
@@ -60,9 +65,11 @@
     <string name="game_code">The game code is given when a user creates a game and they begin waiting
         for players. Use the code given on this waiting screen to join the game for a maximum of 4
         players!</string>
+    <string name="wrong_dialog">Something went wrong. Please check your internet connection</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="okay">Okay</string>
+    <string name="wrong_title">Oops</string>
     <string name="explain">Explanation</string>
     <string name="game_code_title">Game Code</string>
     <string name="game_name_title">Game CodeName</string>

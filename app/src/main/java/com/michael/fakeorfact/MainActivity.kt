@@ -1,17 +1,18 @@
 package com.michael.fakeorfact
 
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.*
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.ads.MobileAds
+import com.michael.fakeorfact.game.multi.JoinGame
 import com.michael.fakeorfact.game.QuizSelect
+import com.michael.fakeorfact.game.multi.StartGame
+import com.michael.fakeorfact.misc.BounceInterpolator
+import com.michael.fakeorfact.misc.Dialog
 import java.util.*
 
 class MainActivity : AppCompatActivity(), View.OnClickListener{
@@ -20,6 +21,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener{
     private var info: ImageButton? = null       // Info Icon
     private var dark: ImageButton? = null       // Dark Mode Icon
     private var contact: ImageButton? = null    // contact Icon
+    private var dialog = Dialog()
     private var quiz: Button? = null
     private var join: Button? = null
     private var start: Button? = null
@@ -57,8 +59,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener{
         //Set the schedule function
         timer.scheduleAtFixedRate(object : TimerTask(){
             override fun run(){
-                // Use bounce interpolator with amplitude 0.2 and frequency 20
-                val interpolator = MyBounceInterpolator(0.2, 30.0)
+                // Use bounce interpolator with amplitude 0.2 and frequency 30
+                val interpolator = BounceInterpolator(0.2, 30.0)
                 myAnim.interpolator = interpolator
                 settings!!.startAnimation(myAnim)
             }
@@ -66,60 +68,25 @@ class MainActivity : AppCompatActivity(), View.OnClickListener{
     }
     // Open Activity based on button clicked
     override fun onClick(v: View){
-        val msg: String
-        val build = AlertDialog.Builder(this)
-        val inflater = layoutInflater
         when (v.id){
             R.id.btn_quiz -> {
                 afterClick()
                 startActivity(Intent(this@MainActivity, QuizSelect::class.java))
             }
-            R.id.btn_startGame ->                 //afterClick();
+            R.id.btn_startGame -> {                //afterClick();
                 Toast.makeText(this, "Multi-player Coming Soon :D", Toast.LENGTH_SHORT).show()
-            R.id.btn_joinGame ->                 //afterClick();
-                Toast.makeText(this, "Multi-player Coming Soon :D", Toast.LENGTH_SHORT).show()
-            R.id.img_btn_dark -> {
-                msg = "Dark Mode Coming Soon"
-                Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
+                //startActivity(Intent(this@MainActivity, StartGame::class.java))
             }
+            R.id.btn_joinGame -> {                //afterClick();
+                Toast.makeText(this, "Multi-player Coming Soon :D", Toast.LENGTH_SHORT).show()
+                //startActivity(Intent(this@MainActivity, JoinGame::class.java))
+            }
+            R.id.img_btn_dark -> Toast.makeText(this, "Dark Mode Coming Soon", Toast.LENGTH_LONG).show()
             R.id.img_btn_contact -> {
-                val dialog = inflater.inflate(R.layout.dialog_view, null)
-                build.setView(dialog)
-                // Grab dialog box objects and fill them
-                val closeBtn = dialog.findViewById<Button>(R.id.btn_ok)
-                val title = dialog.findViewById<TextView>(R.id.txt_dialog_title)
-                val mMsg = dialog.findViewById<TextView>(R.id.txt_dialog)
-                title.text = resources.getString(R.string.contact_title)
-                mMsg.text = resources.getString(R.string.contact_box_dialog)
-                // Show dialog box
-                val mDialog = build.create()
-                mDialog.window!!.setBackgroundDrawableResource(android.R.color.transparent);
-                closeBtn.setOnClickListener { mDialog.dismiss() }
-                mDialog.show()
+                dialog.showDialogBox(resources.getString(R.string.contact_title),
+                        resources.getString(R.string.contact_box_dialog), this@MainActivity)
             }
-            R.id.img_btn_info -> {
-                val count = intArrayOf(0)
-                val dialogV = inflater.inflate(R.layout.dialog_about_view, null)
-                build.setView(dialogV)
-                // Show dialog box
-                val dialog2 = build.create()
-                val close = dialogV.findViewById<Button>(R.id.btn_ok)
-                val secret = dialogV.findViewById<TextView>(R.id.txt_dialog3)
-                dialog2.window!!.setBackgroundDrawableResource(android.R.color.transparent);
-                close.setOnClickListener { dialog2.dismiss() }
-                secret.setOnClickListener {
-                    if (count[0] == 5){
-                        secret.isClickable = false
-                        startActivity(Intent(this@MainActivity, Egg::class.java))
-                    }
-                    else{
-                        Toast.makeText(this, "You have " + (5 - count[0]) + " left",
-                                Toast.LENGTH_SHORT).show()
-                        count[0]++
-                    }
-                }
-                dialog2.show()
-            }
+            R.id.img_btn_info -> dialog.showAboutDialog(this@MainActivity)
             R.id.img_icon -> {
                 val aniRotate = AnimationUtils.loadAnimation(applicationContext,
                         R.anim.rotate_clockwise)
