@@ -40,4 +40,4 @@ Here, you can join a game another player has created by entering the code they r
 </p>
 
 # Help
-* Any questions or concerns regarding this application should be sent to support.fakeorfact@gmail.com. Thank you
+* Any questions or concerns regarding this application should be sent to fakeorfactmobile@gmail.com. Thank you
