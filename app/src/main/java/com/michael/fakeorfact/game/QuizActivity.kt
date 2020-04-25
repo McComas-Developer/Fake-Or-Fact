@@ -25,12 +25,14 @@ import com.michael.fakeorfact.MainActivity
 import com.michael.fakeorfact.misc.BounceInterpolator
 import com.michael.fakeorfact.R
 import com.michael.fakeorfact.db.Question
+import com.michael.fakeorfact.misc.Dialog
 import com.michael.fakeorfact.model.QuestionsViewModel
 import kotlinx.android.synthetic.main.activity_quiz.*
 import kotlin.concurrent.thread
 
 class QuizActivity : AppCompatActivity(), View.OnClickListener {
     private var loading: LottieAnimationView? = null
+    private var dialog = Dialog()
     private var globTimer: CountDownTimer? = null
     private var quizQuestion: TextView? = null
     private var imgCategory: ImageView? = null
@@ -46,7 +48,7 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var questionsViewModel: QuestionsViewModel
 
     private var qAns: Boolean? = null
-    private var qExplain: String? = null
+    lateinit var qExplain: String
     lateinit var mAdView : AdView
     private var loop: Int = 0
     private var temp: Int = 0
@@ -96,40 +98,14 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
             R.id.btn_fact -> answerAnimation("Fact")
             R.id.btn_fake -> answerAnimation("Fake")
             R.id.btn_next -> nextQuestion()
-            R.id.btn_explain -> {
-                // Set Up Dialog box
-                val build = AlertDialog.Builder(this)
-                val inflater = layoutInflater
-                val dialV: View = inflater.inflate(R.layout.dialog_view, null)
-                build.setView(dialV)
-                val close = dialV.findViewById<Button>(R.id.btn_ok)
-                val title = dialV.findViewById<TextView>(R.id.txt_dialog_title)
-                val msg = dialV.findViewById<TextView>(R.id.txt_dialog)
-                title.text = resources.getString(R.string.explain)
-                msg.text = qExplain
-                val box: AlertDialog = build.create()
-                box.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-                close.setOnClickListener { box.dismiss() }
-                box.show()
-            }
+            R.id.btn_explain -> dialog.showDialogBox(resources.getString(R.string.explain),
+                    qExplain, this@QuizActivity)
         }
     }
     // Controls Back Button Key. If pressed and 'Yes' go to Main Menu
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            val builder = AlertDialog.Builder(this)
-            val inflater = layoutInflater
-            val dialV = inflater.inflate(R.layout.leave_view, null)
-            builder.setView(dialV)
-            val yes: Button = dialV.findViewById(R.id.btn_yes)
-            val no: Button = dialV.findViewById(R.id.btn_no)
-            val dialog: AlertDialog = builder.create()
-            dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
-            dialog.show()
-            Log.d(this.javaClass.name, "back button pressed")
-            setBack(yes)
-            no.setOnClickListener { dialog.dismiss() }
-        }
+        if (keyCode == KeyEvent.KEYCODE_BACK)
+            dialog.showLeavingDialogBox(this@QuizActivity)
         return super.onKeyDown(keyCode, event)
     }
     // Observes the questions and adapts
@@ -162,7 +138,10 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
         else{
             thread {
                 Thread.sleep(2000)
-                runOnUiThread { showViews() }
+                runOnUiThread { showViews()
+                    correct!!.isClickable = true
+                    wrong!!.isClickable = true
+                }
             }
         }
     }
@@ -176,6 +155,7 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
         correct!!.visibility = View.VISIBLE
         txtQuestion!!.visibility = View.GONE
         loading!!.visibility = View.GONE
+        normalButtons()
 
         // Set up Game Timer
         txtTimer!!.setTextColor(Color.parseColor("#FFFFFF"))
@@ -191,6 +171,8 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
             }
             override fun onFinish(){
                 setButtons()
+                wrong!!.visibility = View.GONE
+                correct!!.visibility = View.GONE
                 next!!.visibility = View.VISIBLE
             }
         }
@@ -237,29 +219,50 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
         setButtons()
         val manager = supportFragmentManager
         val transaction = manager.beginTransaction()
-        val fragment: Fragment = if(choice == "Fact" && qAns == true || choice == "Fake" && qAns == false)
-            CorrectFragment()
-        else
-            WrongFragment()
+        lateinit var fragment: Fragment
+        if(choice == "Fact" && qAns == true || choice == "Fake" && qAns == false) {
+            fragment = CorrectFragment()
+            if(choice == "Fact") {
+                correct!!.setBackgroundResource(R.drawable.correct_button)
+                wrong!!.background.alpha = 64
+            }
+            else{
+                wrong!!.setBackgroundResource(R.drawable.correct_button)
+                correct!!.background.alpha = 64
+            }
+        }
+        else if(choice == "Fact" && qAns == false || choice == "Fake" && qAns == true) {
+            fragment = WrongFragment()
+            if(choice == "Fact") {
+                correct!!.setBackgroundResource(R.drawable.wrong_button)
+                wrong!!.background.alpha = 64
+            }
+            else{
+                wrong!!.setBackgroundResource(R.drawable.wrong_button)
+                correct!!.background.alpha = 64
+            }
+        }
         transaction.replace(R.id.quiz_fragment, fragment)
         transaction.addToBackStack(null)
         transaction.commit()
         next!!.visibility = View.VISIBLE
         explain!!.visibility = View.VISIBLE
     }
+    // Set buttons back to normal when "Next" is clicked
+    private fun normalButtons(){
+        correct!!.setBackgroundResource(R.drawable.button_state)
+        wrong!!.setBackgroundResource(R.drawable.button_state)
+        wrong!!.background.alpha = 255
+        correct!!.background.alpha = 255
+    }
     private fun setButtons(){
-        correct!!.visibility = View.GONE
-        wrong!!.visibility = View.GONE
+        correct!!.isClickable = false
+        wrong!!.isClickable = false
     }
-    private fun setBack(btn: Button){
-        btn.setOnClickListener {
-            val intent = Intent(this@QuizActivity, MainActivity::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-            startActivity(intent)
-        }
-    }
+    // Reach Game End. Display Game Over Screen
     private fun showGameEnd(){
-        setButtons()
+        wrong!!.visibility = View.GONE
+        correct!!.visibility = View.GONE
         imgCategory!!.visibility = View.GONE
         txtTimer!!.visibility = View.GONE
         next!!.visibility = View.VISIBLE
@@ -267,6 +270,10 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
         explain!!.visibility = View.GONE
         quizQuestion!!.visibility = View.VISIBLE
         quizQuestion!!.text = resources.getString(R.string.coming_soon)
-        setBack(next!!)
+        next!!.setOnClickListener {
+            val intent = Intent(this@QuizActivity, MainActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            startActivity(intent)
+        }
     }
 }
