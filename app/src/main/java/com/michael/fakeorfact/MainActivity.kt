@@ -8,9 +8,7 @@ import android.view.animation.AnimationUtils
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.ads.MobileAds
-import com.michael.fakeorfact.game.multi.JoinGame
 import com.michael.fakeorfact.game.QuizSelect
-import com.michael.fakeorfact.game.multi.StartGame
 import com.michael.fakeorfact.misc.BounceInterpolator
 import com.michael.fakeorfact.misc.Dialog
 import java.util.*
@@ -82,14 +80,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener{
                 //startActivity(Intent(this@MainActivity, JoinGame::class.java))
             }
             R.id.img_btn_dark -> Toast.makeText(this, "Dark Mode Coming Soon", Toast.LENGTH_LONG).show()
-            R.id.img_btn_contact -> {
-                dialog.showDialogBox(resources.getString(R.string.contact_title),
+            R.id.img_btn_contact -> dialog.showDialogBox(resources.getString(R.string.contact_title),
                         resources.getString(R.string.contact_box_dialog), this@MainActivity)
-            }
             R.id.img_btn_info -> dialog.showAboutDialog(this@MainActivity)
             R.id.img_icon -> {
-                val aniRotate = AnimationUtils.loadAnimation(applicationContext,
-                        R.anim.rotate_clockwise)
+                val aniRotate = AnimationUtils.loadAnimation(applicationContext, R.anim.rotate_clockwise)
                 settings!!.startAnimation(aniRotate)
                 aniRotate.setAnimationListener(object : Animation.AnimationListener{
                     override fun onAnimationStart(arg0: Animation){ anim() }
