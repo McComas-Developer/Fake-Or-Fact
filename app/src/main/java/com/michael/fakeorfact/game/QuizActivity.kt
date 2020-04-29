@@ -49,7 +49,7 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
 
     private var qAns: Boolean? = null
     lateinit var qExplain: String
-    lateinit var mAdView : AdView
+    private lateinit var mAdView : AdView
     private var loop: Int = 0
     private var temp: Int = 0
 
