@@ -21,6 +21,7 @@
     <string name="quiz_fact">Fact</string>
     <string name="quiz_timer">0:20</string>
     <string name="quiz_count">Question 1</string>
+    <string name="quiz_score">Score: 0</string>
     <string name="title_activity_settings">Settings</string>
 
     <!-- Quiz Fragment Messages -->

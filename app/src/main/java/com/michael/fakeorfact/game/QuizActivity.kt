@@ -2,7 +2,6 @@ package com.michael.fakeorfact.game
 
 import android.content.Intent
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
@@ -12,7 +11,6 @@ import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -38,6 +36,7 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
     private var imgCategory: ImageView? = null
     private var txtQuestion: TextView? = null
     private var txtTimer: TextView? = null
+    private var txtScore: TextView? = null
     private var wrong: Button? = null
     private var explain: Button? = null
     private var correct: Button? = null
@@ -50,6 +49,7 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
     private var qAns: Boolean? = null
     lateinit var qExplain: String
     lateinit var mAdView : AdView
+    private var score: Int = 0
     private var loop: Int = 0
     private var temp: Int = 0
 
@@ -64,6 +64,7 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
         loading = findViewById(R.id.ani_loading)
         quizQuestion = findViewById(R.id.txt_quizQuestion)
 
+        txtScore = findViewById(R.id.txt_score)
         txtTimer = findViewById(R.id.txt_timer)
         imgCategory = findViewById(R.id.img_category)
         txtQuestion = findViewById(R.id.txt_question_count)
@@ -147,6 +148,7 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
     }
     private fun showViews(){
         // Bring buttons and text back
+        txtScore!!.visibility = View.VISIBLE
         mAdView.visibility = View.VISIBLE
         txtTimer!!.visibility = View.VISIBLE
         quizQuestion!!.visibility = View.VISIBLE
@@ -170,6 +172,8 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
                 }
             }
             override fun onFinish(){
+                score -= 1
+                txtScore!!.text = "Score: $score"
                 setButtons()
                 wrong!!.visibility = View.GONE
                 correct!!.visibility = View.GONE
@@ -209,6 +213,7 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
         txtTimer!!.visibility = View.GONE
         quizQuestion!!.visibility = View.GONE
         imgCategory!!.visibility = View.GONE
+        txtScore!!.visibility = View.GONE
         if(loop == 2)
             return 1
         return 0
@@ -222,6 +227,8 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
         lateinit var fragment: Fragment
         if(choice == "Fact" && qAns == true || choice == "Fake" && qAns == false) {
             fragment = CorrectFragment()
+            score += 3                                            // Add 2 points for correct answer
+            txtScore!!.text = "Score: $score"
             if(choice == "Fact") {
                 correct!!.setBackgroundResource(R.drawable.correct_button)
                 wrong!!.background.alpha = 64
@@ -233,6 +240,8 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
         }
         else if(choice == "Fact" && qAns == false || choice == "Fake" && qAns == true) {
             fragment = WrongFragment()
+            score -= 2                                          // Subtract 1 point for wrong answer
+            txtScore!!.text = "Score: $score"
             if(choice == "Fact") {
                 correct!!.setBackgroundResource(R.drawable.wrong_button)
                 wrong!!.background.alpha = 64
