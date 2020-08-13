@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".EasterEgg">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background">
+        <TextView
+            android:id="@+id/txt_eggCongrats"
+            android:textSize="30sp"
+            android:fontFamily="sans-serif-smallcaps"
+            android:textColor="@android:color/white"
+            android:text="@string/eggCongrats"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/easterEgg"/>
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/ani_eggConfetti"
+            app:lottie_loop="false"
+            app:lottie_autoPlay="false"
+            app:lottie_fileName="confetti.json"
+            android:elevation="15dp"
+            android:visibility="visible"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+        <androidx.cardview.widget.CardView
+            android:id="@+id/easterEgg"
+            android:elevation="10dp"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:background="@android:color/transparent"
+            app:cardCornerRadius="20dp"
+            android:layout_marginTop="80dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/img_easterEgg"
+                android:adjustViewBounds="true"
+                android:layout_width="300dp"
+                android:scaleType="fitCenter"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/cat_1"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:contentDescription="@string/cat" />
+        </androidx.cardview.widget.CardView>
+
+        <Button
+            android:id="@+id/btn_easterEgg"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:textSize="20sp"
+            android:textColor="@android:color/white"
+            android:textAllCaps="false"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:drawableStart="@mipmap/easter"
+            android:drawableEnd="@mipmap/easter"
+            android:layout_marginBottom="100dp"
+            android:text="@string/get_cat"
+            android:background="@drawable/button_state"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>
