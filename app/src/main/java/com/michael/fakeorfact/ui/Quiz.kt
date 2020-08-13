@@ -1,36 +1,35 @@
-package com.michael.fakeorfact.game
+package com.michael.fakeorfact.ui
 
-import android.content.Intent
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
 import android.view.KeyEvent
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.NavHostFragment
 import com.airbnb.lottie.LottieAnimationView
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
-import com.michael.fakeorfact.MainActivity
-import com.michael.fakeorfact.misc.BounceInterpolator
 import com.michael.fakeorfact.R
 import com.michael.fakeorfact.db.Question
+import com.michael.fakeorfact.misc.BounceInterpolator
 import com.michael.fakeorfact.misc.Dialog
 import com.michael.fakeorfact.model.QuestionsViewModel
-import kotlinx.android.synthetic.main.activity_quiz.*
-import kotlin.concurrent.thread
+import kotlinx.android.synthetic.main.fragment_quiz.view.*
 
-class QuizActivity : AppCompatActivity(), View.OnClickListener {
+
+class Quiz : Fragment() {
+
     private var loading: LottieAnimationView? = null
     private var dialog = Dialog()
     private var globTimer: CountDownTimer? = null
@@ -49,41 +48,42 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
 
     private var qAns: Boolean? = null
     lateinit var qExplain: String
+    private var category: String? = null
     lateinit var mAdView : AdView
     private var loop: Int = 0
     private var temp: Int = 0
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_quiz)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
+        val v = inflater.inflate(R.layout.fragment_quiz, container, false)
         // Set Up View, Buttons, and TextView
-        next = findViewById(R.id.btn_next)
-        explain = findViewById(R.id.btn_explain)
-        wrong = findViewById(R.id.btn_fake)
-        correct = findViewById(R.id.btn_fact)
-        loading = findViewById(R.id.ani_loading)
-        quizQuestion = findViewById(R.id.txt_quizQuestion)
+        next = v.btn_next
+        explain = v.btn_explain
+        wrong = v.btn_fake
+        correct = v.btn_fact
+        loading = v.ani_loading
+        quizQuestion = v.txt_quizQuestion
+        txtTimer = v.txt_timer
+        imgCategory = v.img_category
+        txtQuestion = v.txt_question_count
 
-        txtTimer = findViewById(R.id.txt_timer)
-        imgCategory = findViewById(R.id.img_category)
-        txtQuestion = findViewById(R.id.txt_question_count)
-
-        wrong!!.setOnClickListener(this)
-        explain!!.setOnClickListener(this)
-        correct!!.setOnClickListener(this)
-        next!!.setOnClickListener(this)
         txtQuestion!!.visibility = View.GONE
 
-        MobileAds.initialize(this) {}
-        mAdView = findViewById(R.id.adView)
+        correct!!.setOnClickListener { answerAnimation("Fact") }
+        wrong!!.setOnClickListener { answerAnimation("Fake") }
+        next!!.setOnClickListener { nextQuestion() }
+        explain!!.setOnClickListener { dialog.showDialogBox(resources.getString(R.string.explain),
+                qExplain, context) }
+
+        MobileAds.initialize(context)
+        mAdView = v.adView
         val adRequest = AdRequest.Builder().build()
         mAdView.loadAd(adRequest)
 
         // Get Data from database using ViewModel
         questionsViewModel = ViewModelProvider(this).get(QuestionsViewModel::class.java)
-        val intent: Intent = intent
-        val category: String = intent.getStringExtra("choice") ?: "Q"   // If value null, Q
-        viewQuestions(category)
+        category = arguments?.getString("Michael is great")
+        viewQuestions(category!!)
+
         // Set Image based on chosen category
         when(category){
             "History"-> imgCategory!!.setImageResource(R.drawable.history)
@@ -91,27 +91,13 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
             "Art"-> imgCategory!!.setImageResource(R.drawable.art)
             "Random"-> imgCategory!!.setImageResource(R.drawable.random)
         }
+        return v
     }
-    // Call Animation on click
-    override fun onClick(v: View) {
-        when (v.id) {
-            R.id.btn_fact -> answerAnimation("Fact")
-            R.id.btn_fake -> answerAnimation("Fake")
-            R.id.btn_next -> nextQuestion()
-            R.id.btn_explain -> dialog.showDialogBox(resources.getString(R.string.explain),
-                    qExplain, this@QuizActivity)
-        }
-    }
-    // Controls Back Button Key. If pressed and 'Yes' go to Main Menu
-    override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
-        if (keyCode == KeyEvent.KEYCODE_BACK)
-            dialog.showLeavingDialogBox(this@QuizActivity)
-        return super.onKeyDown(keyCode, event)
-    }
+
     // Observes the questions and adapts
     private fun viewQuestions(category: String) {
         if(questionList.isNullOrEmpty()){ hideViews("Start") }
-        questionsViewModel.getQuestions(category).observe(this, Observer {
+        questionsViewModel.getQuestions(category).observe(viewLifecycleOwner, Observer {
             questionList = it as MutableList<Question>?
             // Shuffle Question List
             questionList!!.shuffle()
@@ -129,20 +115,16 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
     }
     // Set Up Controls
     private fun setUpGame(){
-        txt_quizQuestion.text = currentQuestion.Question
+        quizQuestion!!.text = currentQuestion.Question
         qAns = currentQuestion.Answer
         qExplain = currentQuestion.Explain
         temp = hideViews("Next")
         if(temp == 1)
             showGameEnd()
         else{
-            thread {
-                Thread.sleep(2000)
-                runOnUiThread { showViews()
-                    correct!!.isClickable = true
-                    wrong!!.isClickable = true
-                }
-            }
+            showViews()
+            correct!!.isClickable = true
+            wrong!!.isClickable = true
         }
     }
     private fun showViews(){
@@ -197,7 +179,7 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
                 loop = 2
             }
             txtQuestion!!.visibility = View.VISIBLE
-            val myAnim = AnimationUtils.loadAnimation(this, R.anim.expand)
+            val myAnim = AnimationUtils.loadAnimation(context, R.anim.expand)
             val interpolator = BounceInterpolator(0.2, 30.0)
             myAnim.interpolator = interpolator
             txtQuestion!!.startAnimation(myAnim)
@@ -217,7 +199,7 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
     private fun answerAnimation(choice: String){
         globTimer!!.cancel()
         setButtons()
-        val manager = supportFragmentManager
+        val manager = parentFragmentManager
         val transaction = manager.beginTransaction()
         lateinit var fragment: Fragment
         if(choice == "Fact" && qAns == true || choice == "Fake" && qAns == false) {
@@ -271,9 +253,20 @@ class QuizActivity : AppCompatActivity(), View.OnClickListener {
         quizQuestion!!.visibility = View.VISIBLE
         quizQuestion!!.text = resources.getString(R.string.coming_soon)
         next!!.setOnClickListener {
-            val intent = Intent(this@QuizActivity, MainActivity::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-            startActivity(intent)
+            NavHostFragment.findNavController(this).navigate(R.id.action_quiz_to_mainFragment)
         }
+    }
+    override fun onStart() {
+        super.onStart()
+        // Controls Back Button Key. If pressed and 'Yes' go to Main Menu
+        view?.isFocusableInTouchMode = true
+        view?.requestFocus()
+        view?.setOnKeyListener(View.OnKeyListener { _, keyCode, event ->
+            if (keyCode == KeyEvent.KEYCODE_BACK && event.action == KeyEvent.ACTION_UP) {
+                dialog.showLeavingDialogBox(context, this)
+                return@OnKeyListener true
+            }
+            false
+        })
     }
 }

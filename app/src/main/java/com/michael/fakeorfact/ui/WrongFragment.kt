@@ -1,4 +1,4 @@
-package com.michael.fakeorfact.game
+package com.michael.fakeorfact.ui
 
 import android.animation.Animator
 import android.os.Bundle
@@ -6,7 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
+import androidx.navigation.Navigation
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import com.airbnb.lottie.LottieAnimationView
 
 import com.michael.fakeorfact.R

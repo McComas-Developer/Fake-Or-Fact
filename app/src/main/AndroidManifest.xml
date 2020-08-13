@@ -18,22 +18,8 @@
             android:name="firebase_performance_logcat_enabled"
             android:value="true" />
 
-        <activity android:name=".game.multi.WaitScreen" />
-        <activity android:name=".Egg"
-            android:screenOrientation="portrait"/>
-
-        <activity android:name=".game.multi.MultiPlayer" />
         <activity
-            android:name=".game.QuizActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".game.multi.StartGame"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".game.QuizSelect"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".splash.SplashActivity"
+            android:name=".SplashActivity"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme">
             <intent-filter>
@@ -43,10 +29,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".game.multi.JoinGame"
+            android:name=".ui.MainActivity"
             android:screenOrientation="portrait" />
     </application>
 
