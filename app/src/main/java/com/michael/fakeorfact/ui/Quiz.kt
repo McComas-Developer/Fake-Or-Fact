@@ -199,10 +199,11 @@ class Quiz : Fragment() {
     private fun answerAnimation(choice: String){
         globTimer!!.cancel()
         setButtons()
-        val bundle = Bundle()
-        bundle.putString("Michael is great", category)
+        val manager = parentFragmentManager
+        val transaction = manager.beginTransaction()
+        lateinit var fragment: Fragment
         if(choice == "Fact" && qAns == true || choice == "Fake" && qAns == false) {
-            NavHostFragment.findNavController(this).navigate(R.id.action_quiz_to_correctFragment, bundle)
+            fragment = CorrectFragment()
             if(choice == "Fact") {
                 correct!!.setBackgroundResource(R.drawable.correct_button)
                 wrong!!.background.alpha = 64
@@ -213,7 +214,7 @@ class Quiz : Fragment() {
             }
         }
         else if(choice == "Fact" && qAns == false || choice == "Fake" && qAns == true) {
-            NavHostFragment.findNavController(this).navigate(R.id.action_quiz_to_wrongFragment, bundle)
+            fragment = WrongFragment()
             if(choice == "Fact") {
                 correct!!.setBackgroundResource(R.drawable.wrong_button)
                 wrong!!.background.alpha = 64
@@ -223,6 +224,9 @@ class Quiz : Fragment() {
                 correct!!.background.alpha = 64
             }
         }
+        transaction.replace(R.id.quiz_fragment, fragment)
+        transaction.addToBackStack(null)
+        transaction.commit()
         next!!.visibility = View.VISIBLE
         explain!!.visibility = View.VISIBLE
     }

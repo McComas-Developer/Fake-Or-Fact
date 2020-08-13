@@ -40,12 +40,6 @@
         android:label="fragment_quiz"
         tools:layout="@layout/fragment_quiz" >
         <action
-            android:id="@+id/action_quiz_to_correctFragment"
-            app:destination="@id/correctFragment" />
-        <action
-            android:id="@+id/action_quiz_to_wrongFragment"
-            app:destination="@id/wrongFragment" />
-        <action
             android:id="@+id/action_quiz_to_mainFragment"
             app:popUpToInclusive="true"
             app:popUpTo="@+id/mainFragment"
@@ -54,24 +48,6 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"/>
-    </fragment>
-    <fragment
-        android:id="@+id/correctFragment"
-        android:name="com.michael.fakeorfact.ui.CorrectFragment"
-        android:label="fragment_correct"
-        tools:layout="@layout/fragment_correct" >
-        <action
-            android:id="@+id/action_correctFragment_to_quiz"
-            app:destination="@id/quiz" />
-    </fragment>
-    <fragment
-        android:id="@+id/wrongFragment"
-        android:name="com.michael.fakeorfact.ui.WrongFragment"
-        android:label="fragment_wrong"
-        tools:layout="@layout/fragment_wrong" >
-        <action
-            android:id="@+id/action_wrongFragment_to_quiz"
-            app:destination="@id/quiz" />
     </fragment>
     <fragment
         android:id="@+id/easterEgg"
