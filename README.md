@@ -4,8 +4,6 @@ Welcome!!! Fake or Fact is an android Trivia app designed to put your obscure kn
 
 # Quiz Yourself
 
-*Currently in development*
-
 When you select the quiz yourself option you can test your knowledge in 4 different categories:
 * History
 * Science
@@ -17,26 +15,6 @@ All of these categories are fairly self explanatory except for random. The rando
   <img src="https://github.com/McComas-Developer/Fake-Or-Fact/blob/master/images/main.png" width="200">
   <img src="https://github.com/McComas-Developer/Fake-Or-Fact/blob/master/images/quizSelect.png" width="200">
   <img src="https://github.com/McComas-Developer/Fake-Or-Fact/blob/master/images/quiz.png" width="200">
-</p>
-
-# Start a Game
-*Currently in development*
-
-Here, you can create a game based on the 4 different categories, enter your CodeName, and click start. Once the game has been created, you can give the code present on the screen to other players to join your game for a maximum of 4 players. *More information to come*
-<p float="left">
-  <img src="https://github.com/McComas-Developer/Fake-Or-Fact/blob/master/images/main.png" width="200">
-  <img src="https://github.com/McComas-Developer/Fake-Or-Fact/blob/master/images/start.png" width="200">
-  <img src="https://github.com/McComas-Developer/Fake-Or-Fact/blob/master/images/wait.png" width="200">
-</p>
-
-# Join a Game
-*Currently in development*
-
-Here, you can join a game another player has created by entering the code they receive once they begin waiting for other players. Type in the code and enter your codename to join! However, if there are already 4 players in game you'll be unable to join as games have a maximum of 4 players.
-<p float="left">
-  <img src="https://github.com/McComas-Developer/Fake-Or-Fact/blob/master/images/main.png" width="200">
-  <img src="https://github.com/McComas-Developer/Fake-Or-Fact/blob/master/images/join.png" width="200">
-  <img src="https://github.com/McComas-Developer/Fake-Or-Fact/blob/master/images/wait.png" width="200">
 </p>
 
 # Help
