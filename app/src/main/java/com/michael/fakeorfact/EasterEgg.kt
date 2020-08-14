@@ -12,7 +12,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import com.airbnb.lottie.LottieAnimationView
-import com.michael.fakeorfact.misc.BounceInterpolator
+import com.michael.fakeorfact.util.BounceInterpolator
 import kotlinx.android.synthetic.main.fragment_easter_egg.view.*
 
 class EasterEgg : Fragment() {

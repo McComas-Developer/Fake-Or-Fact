@@ -1,4 +1,4 @@
-package com.michael.fakeorfact.misc
+package com.michael.fakeorfact.util
 
 import android.view.animation.Interpolator
 import kotlin.math.cos

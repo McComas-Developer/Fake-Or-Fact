@@ -12,6 +12,8 @@ import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast.LENGTH_SHORT
+import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -20,13 +22,15 @@ import com.airbnb.lottie.LottieAnimationView
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
+import com.google.android.material.snackbar.Snackbar
 import com.michael.fakeorfact.R
 import com.michael.fakeorfact.db.Question
-import com.michael.fakeorfact.misc.BounceInterpolator
-import com.michael.fakeorfact.misc.Dialog
+import com.michael.fakeorfact.util.BounceInterpolator
+import com.michael.fakeorfact.util.Dialog
 import com.michael.fakeorfact.model.QuestionsViewModel
+import com.michael.fakeorfact.util.Connectivity
 import kotlinx.android.synthetic.main.fragment_quiz.view.*
-
+import kotlin.concurrent.thread
 
 class Quiz : Fragment() {
 
@@ -65,14 +69,12 @@ class Quiz : Fragment() {
         txtTimer = v.txt_timer
         imgCategory = v.img_category
         txtQuestion = v.txt_question_count
-
         txtQuestion!!.visibility = View.GONE
 
         correct!!.setOnClickListener { answerAnimation("Fact") }
         wrong!!.setOnClickListener { answerAnimation("Fake") }
         next!!.setOnClickListener { nextQuestion() }
-        explain!!.setOnClickListener { dialog.showDialogBox(resources.getString(R.string.explain),
-                qExplain, context) }
+        explain!!.setOnClickListener { dialog.showDialogBox(resources.getString(R.string.explain), qExplain, context) }
 
         MobileAds.initialize(context)
         mAdView = v.adView
@@ -91,6 +93,10 @@ class Quiz : Fragment() {
             "Art"-> imgCategory!!.setImageResource(R.drawable.art)
             "Random"-> imgCategory!!.setImageResource(R.drawable.random)
         }
+
+        //Check for internet connection
+        if(!Connectivity.isOnline)
+            Snackbar.make(v.quiz_layout, resources.getString(R.string.internet), 5000).show()
         return v
     }
 
@@ -122,14 +128,18 @@ class Quiz : Fragment() {
         if(temp == 1)
             showGameEnd()
         else{
-            showViews()
-            correct!!.isClickable = true
-            wrong!!.isClickable = true
+            thread{
+                Thread.sleep(2000)
+                activity?.runOnUiThread {
+                    showViews()
+                    correct!!.isClickable = true
+                    wrong!!.isClickable = true
+                }
+            }
         }
     }
     private fun showViews(){
         // Bring buttons and text back
-        mAdView.visibility = View.VISIBLE
         txtTimer!!.visibility = View.VISIBLE
         quizQuestion!!.visibility = View.VISIBLE
         imgCategory!!.visibility = View.VISIBLE

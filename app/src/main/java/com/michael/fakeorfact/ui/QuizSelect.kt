@@ -7,10 +7,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
+import androidx.cardview.widget.CardView
 import androidx.navigation.fragment.NavHostFragment
 import com.airbnb.lottie.LottieAnimationView
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.MobileAds
 import com.michael.fakeorfact.R
+import kotlinx.android.synthetic.main.fragment_quiz.view.*
 import kotlinx.android.synthetic.main.fragment_quiz_select.view.*
+import kotlinx.android.synthetic.main.fragment_quiz_select.view.adView
 
 class QuizSelect : Fragment() {
 
@@ -24,12 +29,15 @@ class QuizSelect : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val v = inflater.inflate(R.layout.fragment_quiz_select, container, false)
-        // Set up History Button On Click
-        val history: Button = v.btn_history
-        val science: Button = v.btn_science
-        val art: Button = v.btn_art
-        val random: Button = v.btn_random
+        val history: CardView = v.card_history
+        val science: CardView = v.card_science
+        val art: CardView = v.card_art
+        val random: CardView = v.card_random
         val start: Button = v.btn_start
+        val mAdView = v.adView
+
+        val adRequest = AdRequest.Builder().build()
+        mAdView.loadAd(adRequest)
 
         history.setOnClickListener { setAnimationFocus(aniUnfocus, ani[0], "History") }
         science.setOnClickListener { setAnimationFocus(aniUnfocus, ani[1], "Science") }
@@ -37,9 +45,9 @@ class QuizSelect : Fragment() {
         random.setOnClickListener { setAnimationFocus(aniUnfocus, ani[3], "Random") }
         start.setOnClickListener {
             if (!checkAnimations()){
-                Toast.makeText(context, "To start a game, " +
-                        "please select a category", Toast.LENGTH_SHORT).show()
-            } else{
+                Toast.makeText(context, resources.getString(R.string.select_category),
+                        Toast.LENGTH_SHORT).show()
+            } else {
                 // Pass category choice to quiz activity and start it
                 val bundle = Bundle()
                 bundle.putString("Michael is great", chosen)
@@ -48,9 +56,8 @@ class QuizSelect : Fragment() {
             }
         }
 
-        for (i in ani.indices){
+        for (i in ani.indices)
             ani[i] = v.findViewById(aniID[i])
-        }
         aniUnfocus = ani[0]
         return v
     }

@@ -15,11 +15,10 @@ import androidx.navigation.fragment.NavHostFragment
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
 import com.michael.fakeorfact.R
-import com.michael.fakeorfact.misc.BounceInterpolator
-import com.michael.fakeorfact.misc.Dialog
+import com.michael.fakeorfact.util.BounceInterpolator
+import com.michael.fakeorfact.util.Dialog
 import kotlinx.android.synthetic.main.fragment_main.view.*
 import kotlinx.android.synthetic.main.fragment_main.view.adView
-import kotlinx.android.synthetic.main.fragment_quiz.view.*
 import java.util.*
 
 class MainFragment : Fragment() {
@@ -33,11 +32,10 @@ class MainFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val v = inflater.inflate(R.layout.fragment_main, container, false)
-
         info = v.img_btn_info
         dark = v.img_btn_dark
         contact = v.img_btn_contact
-        settings = v.img_icon
+        settings = v.ic_settings
         quiz = v.btn_quiz
 
         MobileAds.initialize(context)
@@ -62,20 +60,6 @@ class MainFragment : Fragment() {
                 override fun onAnimationEnd(arg0: Animation){}
             })
         }
-
-        MobileAds.initialize(context){}
-        val timer = Timer()
-        val myAnim = AnimationUtils.loadAnimation(context, R.anim.expand)
-        //Set the schedule function
-        timer.scheduleAtFixedRate(object : TimerTask(){
-            override fun run(){
-                // Use bounce interpolator with amplitude 0.2 and frequency 30
-                val interpolator = BounceInterpolator(0.2, 30.0)
-                myAnim.interpolator = interpolator
-                settings.startAnimation(myAnim)
-            }
-        }, 0, 15000)
-
         return v
     }
     private fun anim(){

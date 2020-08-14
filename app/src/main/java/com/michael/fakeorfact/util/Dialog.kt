@@ -1,7 +1,6 @@
-package com.michael.fakeorfact.misc
+package com.michael.fakeorfact.util
 
 import android.content.Context
-import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
